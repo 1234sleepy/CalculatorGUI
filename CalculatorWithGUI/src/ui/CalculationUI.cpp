@@ -1,13 +1,18 @@
-#include "../include/ui/CalculatorUI.h"
+
+#include "../../include/calculators/BasicCalculator.h"
+#include "../../include/calculators/QuadraticCalculator.h"
+#include "../../include/calculators/TrigCalculator.h"
+
 #include "imgui.h"
 #include "../imguI/misc/cpp/imgui_stdlib.h" 
+
+#include "../../include/ui/CalculatorUI.h"
+
 
 #include <iostream>
 
 void RenderCalculatorUI(CalculatorUI& currentUI)
 {
-
-
     ImGui::SetNextWindowSize(ImVec2(200, 100));
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
 
@@ -48,7 +53,7 @@ void RenderBasicCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-         
+            result = EvaluateBasicCalculator();
         }
 
         ImGui::Separator();
@@ -74,7 +79,7 @@ void RenderQuadraticCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-
+            result = EvaluateQuadraticCalculator();
         }
 
         ImGui::Separator();
@@ -99,7 +104,7 @@ void RenderTrigCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-
+            result = EvaluateTrigCalculator();
         }
 
         ImGui::Separator();

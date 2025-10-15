@@ -243,8 +243,10 @@ int main(int, char**)
         ImGui_ImplDX12_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-
+        
+        
         RenderCalculatorUI(currentUI);
+        
 
         ImGui::Render();
 

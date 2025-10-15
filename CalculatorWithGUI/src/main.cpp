@@ -216,7 +216,7 @@ int main(int, char**)
     // Main loop
     bool done = false;
     bool bOpened = true;
-
+    CalculatorUI currentUI = CalculatorUI::BasicCalc;
     while (!done)
     {
        
@@ -244,10 +244,7 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        RenderCalculatorUI();
-
-
-
+        RenderCalculatorUI(currentUI);
 
         ImGui::Render();
 

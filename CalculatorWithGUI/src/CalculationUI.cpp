@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-void RenderCalculatorUI() 
+void RenderCalculatorUI(CalculatorUI& currentUI)
 {
-    CalculatorUI currentUI = CalculatorUI::BasicCalc;
+
 
     ImGui::SetNextWindowSize(ImVec2(200, 100));
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
@@ -64,7 +64,7 @@ void RenderQuadraticCalculator()
     static double result = 0.0;
 
     ImGui::SetNextWindowSize(ImVec2(400, 700));
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
 
 
     if (ImGui::Begin("Quadratic Calculator", nullptr,
@@ -90,12 +90,12 @@ void RenderTrigCalculator()
     static double result = 0.0;
 
     ImGui::SetNextWindowSize(ImVec2(400, 700));
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
 
     if (ImGui::Begin("Trig Calculator", nullptr,
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
     {
-        ImGui::InputTextWithHint("##Expression", "Type quadratic exprasion", &expression);
+        ImGui::InputTextWithHint("##Expression", "Type trig exprasion", &expression);
 
         if (ImGui::Button("Evaluate"))
         {

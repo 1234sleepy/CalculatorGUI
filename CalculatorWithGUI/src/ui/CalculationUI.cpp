@@ -40,7 +40,8 @@ void RenderCalculatorUI(CalculatorUI& currentUI)
 
 void RenderBasicCalculator()
 {
-    static std::string expression = "";
+    static char expression[256] = "";
+    static char prevExpression[256] = "";
     static double result = 0.0;
 
     ImGui::SetNextWindowSize(ImVec2(400, 700));
@@ -49,15 +50,20 @@ void RenderBasicCalculator()
     if (ImGui::Begin("Basic Calculator", nullptr,
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
     {
-        ImGui::InputTextWithHint("##Expression", "Type basic exprasion", &expression);
+        ImGui::InputTextWithHint("##Expression", "(less than 256 characters)",
+            expression, sizeof(expression),
+            ImGuiInputTextFlags_CallbackCharFilter,
+            NoLettersCallback);
 
         if (ImGui::Button("Evaluate"))
         {
-            result = EvaluateBasicCalculator();
+            result = EvaluateBasicCalculator(expression);
+            memcpy(prevExpression, expression, sizeof(expression));
+            expression[0] = '\0';
         }
 
         ImGui::Separator();
-        ImGui::Text("Expression: %s", expression.c_str());
+        ImGui::Text("Expression: %s", prevExpression);
         ImGui::Text("Result: %.6f", result);
     }
     ImGui::End();

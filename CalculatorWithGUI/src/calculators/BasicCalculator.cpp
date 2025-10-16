@@ -1,7 +1,13 @@
 #include "../../include/calculators/BasicCalculator.h"
 
 #include <iostream>
+#include <stack>
+#include <vector>
 #include <string>
+#include <cctype>
+#include <unordered_map>
+#include <functional>
+#include <cmath>
 
 int NoLettersCallback(ImGuiInputTextCallbackData* data)
 {
@@ -12,71 +18,135 @@ int NoLettersCallback(ImGuiInputTextCallbackData* data)
 	return isValidValue? 0:1;
 }
 
-double EvaluateBasicCalculator(const char expression[256])
+
+
+int precedenceLevelOfOperations(char op)
 {
-	size_t len = std::strlen(expression);
-
-	double res = 0;
-	
-	char oper = 'n';
-	std::string num = "";
-	std::string num2 = "";
-
-	double tmpValue = 0.0;
-
-	for (size_t i = 0; i < len+1; i++)
+	if (op == '+' || op == '-')
 	{
-		std::cout << i << " num: " << num << " num2: " << num2 << " oper: " << oper << " res: " << res << " exp: " << expression[i] << "\n";
-		if (oper == 'n')
-		{
-			if (!std::strchr("+-/*", expression[i]))
-			{
-				num += expression[i];
-			}
-			else
-			{
-				tmpValue = std::stod(num);
-				num = "";
-				res += tmpValue;
-				tmpValue = 0;
-				oper = expression[i];
-			}
-		}
-		else if (oper != 'n')
-		{
-			if (!std::strchr("+-/*", expression[i]))
-			{
-				num2 += expression[i];
-			}
-			else
-			{
-				std::cout << "nice";
-				tmpValue = std::stod(num2);
-				switch (oper)
-				{
-					case '+':
-						res += tmpValue;
-						break;
-					case '-':
-						res -= tmpValue;
-						break;
-					case '*':
-						res *= tmpValue;
-						break;
-					case '/':
-						res /= tmpValue;
-						break;
-					default:
-						res += tmpValue;
-						break;
-				}
-				tmpValue = 0.0;
-				num2 = "";
-				oper = expression[i];
-			}
-		}
-			std::cout << i << " num: " << num << " num2: " << num2 << " oper: " << oper << " res: " << res << "\n";
+		return 1;
 	}
 
-	return res;
+	if (op == '*' || op == '/')
+	{
+		return 2;
+	}
+
+	if (op == '^')
+	{
+		return 3;
+	}
+
+	return 0;
+}
+
+std::vector<std::string> infixToPostfix(const std::string& expr)
+{
+    std::vector<std::string> output;
+    std::stack<char> ops;
+    std::string num = "";
+
+    auto pushNumber = [&]() {
+        if (!num.empty()) {
+            output.push_back(num);
+            num.clear();
+        }
+        };
+
+    for (size_t i = 0; i < expr.size(); ++i) {
+        char c = expr[i];
+
+        if (isspace(c)) continue;
+
+        if (isdigit(c) || c == '.') {
+            num += c;
+        }
+        else if (c == '-' && (i == 0 || expr[i - 1] == '(' || std::strchr("+-/*^", expr[i - 1]))) {
+            num += c;
+        }
+        else {
+            pushNumber();
+
+            if (c == '(') {
+                ops.push(c);
+            }
+            else if (c == ')') {
+                while (!ops.empty() && ops.top() != '(') {
+                    output.push_back(std::string(1, ops.top()));
+                    ops.pop();
+                }
+                if (!ops.empty()) ops.pop();
+            }
+            else if (std::strchr("+-*/^", c)) {
+                while (!ops.empty() && (
+                    (precedenceLevelOfOperations(ops.top()) > precedenceLevelOfOperations(c)) ||
+                    (precedenceLevelOfOperations(ops.top()) == precedenceLevelOfOperations(c) && c != '^') // right-assoc ^ 
+                    ))
+                {
+                    output.push_back(std::string(1, ops.top()));
+                    ops.pop();
+                }
+                ops.push(c);
+            }
+        }
+    }
+
+    pushNumber();
+
+    while (!ops.empty()) {
+        output.push_back(std::string(1, ops.top()));
+        ops.pop();
+    }
+
+    return output;
+}
+
+double evaluatePostfix(const std::vector<std::string>& postfix)
+{
+	std::stack<double> values;
+
+
+	static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
+		{"+", [](double a, double b) { return a + b; }},
+		{"-", [](double a, double b) { return a - b; }},
+		{"*", [](double a, double b) { return a * b; }},
+		{"/", [](double a, double b) { return a / b; }},
+		{"^", [](double a, double b) { return std::pow(a, b); }}
+	};
+
+	for (const auto& token : postfix)
+	{
+		if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
+		{
+			values.push(std::stod(token));
+		}
+		else
+		{
+
+			double b = values.top(); values.pop();
+			double a = values.top(); values.pop();
+
+			auto it = ops.find(token);
+			if (it != ops.end())
+			{
+				double result = it->second(a, b);
+				values.push(result);
+			}
+			else
+			{
+				std::cerr << "Unknown operator: " << token << '\n';
+				return NULL;
+			}
+		}
+	}
+
+	return values.top();
+}
+
+double EvaluateBasicCalculator(const char expression[256])
+{
+	std::string expr = expression;
+	std::vector<std::string> postfix = infixToPostfix(expr);
+
+	return evaluatePostfix(postfix);
 }

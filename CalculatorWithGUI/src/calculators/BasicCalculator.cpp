@@ -2,25 +2,12 @@
 
 #include <iostream>
 #include <stack>
-#include <vector>
-#include <string>
 #include <cctype>
 #include <unordered_map>
 #include <functional>
 #include <cmath>
 
-int NoLettersCallback(ImGuiInputTextCallbackData* data)
-{
-	ImWchar c = data->EventChar;
-
-	bool isValidValue = (c >= '0' && c <= '9') || std::strchr("+-/*().^", c);
-
-	return isValidValue? 0:1;
-}
-
-
-
-int precedenceLevelOfOperations(char op)
+int BasicCalculator::getOperatorPrecedence(char op)
 {
 	if (op == '+' || op == '-')
 	{
@@ -40,47 +27,62 @@ int precedenceLevelOfOperations(char op)
 	return 0;
 }
 
-std::vector<std::string> infixToPostfix(const std::string& expr)
+std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::string& expr)
 {
     std::vector<std::string> output;
     std::stack<char> ops;
     std::string num = "";
 
-    auto pushNumber = [&]() {
-        if (!num.empty()) {
+    auto pushNumber = [&]()
+    {
+        if (!num.empty())
+        {
             output.push_back(num);
             num.clear();
         }
-        };
+    };
 
-    for (size_t i = 0; i < expr.size(); ++i) {
+    for (size_t i = 0; i < expr.size(); ++i) 
+    {
         char c = expr[i];
 
-        if (isspace(c)) continue;
+        if (isspace(c))
+        {
+            continue;
+        }
 
-        if (isdigit(c) || c == '.') {
+        if (isdigit(c) || c == '.')
+        {
             num += c;
         }
-        else if (c == '-' && (i == 0 || expr[i - 1] == '(' || std::strchr("+-/*^", expr[i - 1]))) {
+        else if (c == '-' && (i == 0 || expr[i - 1] == '(' || std::strchr("+-/*^", expr[i - 1])))
+        {
             num += c;
         }
-        else {
+        else
+        {
             pushNumber();
 
-            if (c == '(') {
+            if (c == '(')
+            {
                 ops.push(c);
             }
-            else if (c == ')') {
+            else if (c == ')')
+            {
                 while (!ops.empty() && ops.top() != '(') {
                     output.push_back(std::string(1, ops.top()));
                     ops.pop();
                 }
-                if (!ops.empty()) ops.pop();
+                if (!ops.empty())
+                {
+                    ops.pop();
+                }
             }
-            else if (std::strchr("+-*/^", c)) {
+            else if (std::strchr("+-*/^", c))
+            {
                 while (!ops.empty() && (
-                    (precedenceLevelOfOperations(ops.top()) > precedenceLevelOfOperations(c)) ||
-                    (precedenceLevelOfOperations(ops.top()) == precedenceLevelOfOperations(c) && c != '^') // right-assoc ^ 
+                    (getOperatorPrecedence(ops.top()) > getOperatorPrecedence(c)) ||
+                    (getOperatorPrecedence(ops.top()) == getOperatorPrecedence(c) && c != '^')
                     ))
                 {
                     output.push_back(std::string(1, ops.top()));
@@ -93,7 +95,8 @@ std::vector<std::string> infixToPostfix(const std::string& expr)
 
     pushNumber();
 
-    while (!ops.empty()) {
+    while (!ops.empty())
+    {
         output.push_back(std::string(1, ops.top()));
         ops.pop();
     }
@@ -101,10 +104,9 @@ std::vector<std::string> infixToPostfix(const std::string& expr)
     return output;
 }
 
-double evaluatePostfix(const std::vector<std::string>& postfix)
+double BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>& postfix)
 {
 	std::stack<double> values;
-
 
 	static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
 		{"+", [](double a, double b) { return a + b; }},
@@ -143,10 +145,11 @@ double evaluatePostfix(const std::vector<std::string>& postfix)
 	return values.top();
 }
 
-double EvaluateBasicCalculator(const char expression[256])
+double BasicCalculator::evaluateExpression(const char expression[256])
 {
 	std::string expr = expression;
-	std::vector<std::string> postfix = infixToPostfix(expr);
 
-	return evaluatePostfix(postfix);
+	std::vector<std::string> postfix = convertInfixToPostfix(expr);
+
+	return evaluatePostfixExpression(postfix);
 }

@@ -3,6 +3,8 @@
 #include "../../include/calculators/QuadraticCalculator.h"
 #include "../../include/calculators/TrigCalculator.h"
 
+#include "../../include/filters/InputFilter.h"
+
 #include "imgui.h"
 #include "../imguI/misc/cpp/imgui_stdlib.h" 
 
@@ -57,7 +59,7 @@ void RenderBasicCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-            result = EvaluateBasicCalculator(expression);
+            result = BasicCalculator::evaluateExpression(expression);
             memcpy(prevExpression, expression, sizeof(expression));
             expression[0] = '\0';
         }
@@ -85,7 +87,7 @@ void RenderQuadraticCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-            result = EvaluateQuadraticCalculator();
+            
         }
 
         ImGui::Separator();
@@ -110,7 +112,7 @@ void RenderTrigCalculator()
 
         if (ImGui::Button("Evaluate"))
         {
-            result = EvaluateTrigCalculator();
+           
         }
 
         ImGui::Separator();

@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="src\calculators\BasicCalculator.cpp" />
     <ClCompile Include="src\calculators\TrigCalculator.cpp" />
+    <ClCompile Include="src\filters\InputFilter.cpp" />
     <ClCompile Include="src\ui\CalculationUI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\calculators\QuadraticCalculator.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="include\calculators\BasicCalculator.h" />
     <ClInclude Include="include\calculators\QuadraticCalculator.h" />
     <ClInclude Include="include\calculators\TrigCalculator.h" />
+    <ClInclude Include="include\filters\InputFilter.h" />
     <ClInclude Include="include\ui\CalculatorUI.h" />
     <ClInclude Include="vendor\imguI\backends\imgui_impl_dx12.h" />
     <ClInclude Include="vendor\imguI\backends\imgui_impl_win32.h" />

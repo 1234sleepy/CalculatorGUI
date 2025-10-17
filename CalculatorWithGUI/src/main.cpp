@@ -13,6 +13,8 @@
 #include <dxgi1_5.h>
 #include <tchar.h>
 
+#include <windows.h>
+
 #include <iostream>
 
 #include "../include/ui/CalculatorUI.h"
@@ -112,7 +114,12 @@ FrameContext* WaitForNextFrameContext();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 // Main code
-int main(int, char**)
+int WINAPI WinMain(
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPSTR lpCmdLine,
+    _In_ int nShowCmd
+)
 {
     // Make process DPI aware and obtain main monitor scale
     ImGui_ImplWin32_EnableDpiAwareness();
@@ -128,7 +135,7 @@ int main(int, char**)
     HWND hwnd = ::CreateWindowEx(
         WS_EX_LAYERED,
         _T("Calculator"),
-        _T("Transparent ImGui Window"),
+        _T("Calculator"),
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
         CalculatorUI::programWidth, CalculatorUI::programHeight,

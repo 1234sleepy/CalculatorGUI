@@ -71,17 +71,17 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
         if (ImGui::Button("Quadratic", standardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::QuadraticCalc)
         {
             CalculatorUI::renderQuadraticCalculator();
-            if (currentUI != CalculatorUI::calculatorTypes::BasicCalc)
+            if (currentUI != CalculatorUI::calculatorTypes::QuadraticCalc)
             {
-                CalculatorUI::changeCalc(currentUI, CalculatorUI::calculatorTypes::BasicCalc);
+                CalculatorUI::changeCalc(currentUI, CalculatorUI::calculatorTypes::QuadraticCalc);
             }
         }
         if (ImGui::Button("Trig", standardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::TrigCalc)
         {
             CalculatorUI::renderTrigCalculator();
-            if (currentUI != CalculatorUI::calculatorTypes::BasicCalc)
+            if (currentUI != CalculatorUI::calculatorTypes::TrigCalc)
             {
-                CalculatorUI::changeCalc(currentUI, CalculatorUI::calculatorTypes::BasicCalc);
+                CalculatorUI::changeCalc(currentUI, CalculatorUI::calculatorTypes::TrigCalc);
             }
         }
     }

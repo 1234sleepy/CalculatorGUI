@@ -6,9 +6,9 @@
 // - Documentation        https://dearimgui.com/docs (same as your local docs/ folder).
 // - Introduction, links and more at the top of imgui.cpp
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx12.h"
+#include "../vendor/imguI/imgui.h"
+#include "../vendor/imguI/backends/imgui_impl_win32.h"
+#include "../vendor/imguI/backends/imgui_impl_dx12.h"
 #include <d3d12.h>
 #include <dxgi1_5.h>
 #include <tchar.h>
@@ -122,8 +122,7 @@ int main(int, char**)
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Calculator", nullptr };
     ::RegisterClassExW(&wc);
 
-    int programWidth = 600;
-    int programHeight = 700;
+
 
     
     HWND hwnd = ::CreateWindowEx(
@@ -132,7 +131,7 @@ int main(int, char**)
         _T("Transparent ImGui Window"),
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        programWidth, programHeight,
+        CalculatorUI::programWidth, CalculatorUI::programHeight,
         NULL, NULL, wc.hInstance, NULL);
 
 
@@ -216,7 +215,9 @@ int main(int, char**)
     // Main loop
     bool done = false;
     bool bOpened = true;
+
     CalculatorUI::calculatorTypes currentUI = CalculatorUI::calculatorTypes::BasicCalc;
+
     while (!done)
     {
        

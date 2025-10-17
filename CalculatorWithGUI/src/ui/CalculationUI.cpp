@@ -1,12 +1,12 @@
 ﻿
-#include "calculators/BasicCalculator.h"
-#include "calculators/QuadraticCalculator.h"
-#include "calculators/TrigCalculator.h"
+#include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
+#include "../../../CalculatorCore/include/calculators/QuadraticCalculator.h"
+#include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
 
 #include "../../include/filters/InputFilter.h"
 
 
-#include "../imguI/misc/cpp/imgui_stdlib.h" 
+#include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
 
 #include "../../include/ui/CalculatorUI.h"
 
@@ -15,8 +15,13 @@
 
 const ImGuiWindowFlags CalculatorUI::imGuiWindowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar;
 
+const int CalculatorUI::programWidth = 600;
+const int CalculatorUI::programHeight = 700;
+
+
 const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(370, 20);
 const ImVec2 CalculatorUI::standardCalculatorUISize = ImVec2(180, 20);
+const double CalculatorUI::standardCalculatorInputTextWithHintSize = 370.0;
 
 void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 {
@@ -54,6 +59,7 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 void CalculatorUI::renderBasicCalculator()
 {
     static char expression[256] = "";
+    static char prevExpression[256] = "";
     static double result = 0.0;
 
     ImGui::SetNextWindowSize(ImVec2(400, 700));
@@ -70,6 +76,7 @@ void CalculatorUI::renderBasicCalculator()
 
         ImGui::Separator();
 
+        ImGui::SetNextItemWidth(CalculatorUI::standardCalculatorInputTextWithHintSize);
         ImGui::InputTextWithHint("##Expression", "(2+2)*2",
             expression, sizeof(expression),
             ImGuiInputTextFlags_CallbackCharFilter,
@@ -82,8 +89,12 @@ void CalculatorUI::renderBasicCalculator()
             expression[0] = '\0';
         }
 
-        //ImGui::Text("Expression: %s", prevExpression);
+
+        
+        ImGui::SetWindowFontScale(1.5f);
+        ImGui::Text("Expression: %s", prevExpression);
         ImGui::Text("Result: %.6f", result);
+        ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();
 }
@@ -133,7 +144,7 @@ void CalculatorUI::renderTrigCalculator()
         }
 
         ImGui::Separator();
-        ImGui::Text("Expression: %s", expression.c_str());
+        ImGui::Text("Expression: %s", expression);
         ImGui::Text("Result: %.6f", result);
     }
     ImGui::End();

@@ -53,7 +53,7 @@ Index of this file:
 
 // Visual Studio warnings
 #ifdef _MSC_VER
-#pragma warning (disable: 4127)     // condition expression is constant
+#pragma warning (disable: 4127)     // condition CalculatorUI::expression is constant
 #pragma warning (disable: 4996)     // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
 #if defined(_MSC_VER) && _MSC_VER >= 1922 // MSVC 2019 16.2 or later
 #pragma warning (disable: 5054)     // operator '|': deprecated between enumerations of different types
@@ -2330,7 +2330,7 @@ void ImGui::DataTypeApplyOp(ImGuiDataType data_type, int op, void* output, const
 }
 
 // User can input math operators (e.g. +100) to edit a numerical values.
-// NB: This is _not_ a full expression evaluator. We should probably add one and replace this dumb mess..
+// NB: This is _not_ a full CalculatorUI::expression evaluator. We should probably add one and replace this dumb mess..
 bool ImGui::DataTypeApplyFromText(const char* buf, ImGuiDataType data_type, void* p_data, const char* format, void* p_data_when_empty)
 {
     // Copy the value in an opaque buffer so we can compare at the end of the function if it changed at all.

@@ -16,10 +16,19 @@ public:
 		TrigCalc
 	};
 
-	static const std::array<std::string, 9> buttonNames;
+	struct functBtn
+	{
+		std::string name;
+		std::string value;
+	};
+
+	static const std::array<functBtn, 9> buttonNames;
 
 	static const int programWidth;
 	static const int programHeight;
+
+	static char expression[256];
+	static char prevExpression[256];
 
 	static const ImGuiWindowFlags imGuiWindowFlags;
 
@@ -36,5 +45,9 @@ public:
 	static void renderTrigCalculator();
 
 	static void renderFuncExprButtons();
+
+	static void addToExpression(std::string addition);
+
+	static void changeCalc(calculatorTypes& currentUI, calculatorTypes type);
 
 };

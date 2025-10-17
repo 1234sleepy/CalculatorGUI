@@ -1,4 +1,8 @@
 #include "pch.h"
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <iostream>
 
 #include "../../include/calculators/BasicCalculator.h"
@@ -7,7 +11,8 @@
 #include <cctype>
 #include <unordered_map>
 #include <functional>
-#include <cmath>
+
+
 
 int BasicCalculator::getOperatorPrecedence(char op)
 {
@@ -53,9 +58,20 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
             continue;
         }
 
-        if (isdigit(c) || c == '.')
+        if (isdigit(c) || c == '.' || c=='P' || c=='e')
         {
-            num += c;
+            if (c == 'P')
+            {
+                num += std::to_string(std::round(M_PI * 1000000.0) / 1000000.0);
+            }
+            else if (c == 'e')
+            {
+                num += std::to_string(std::round(M_E * 1000000.0) / 1000000.0);
+            }
+            else 
+            {
+                num += c;
+            }
         }
         else if (c == '-' && (i == 0 || expr[i - 1] == '(' || std::strchr("+-/*^", expr[i - 1])))
         {

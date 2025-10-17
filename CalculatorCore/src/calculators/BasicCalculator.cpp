@@ -1,6 +1,8 @@
+#include "pch.h"
+#include <iostream>
+
 #include "../../include/calculators/BasicCalculator.h"
 
-#include <iostream>
 #include <stack>
 #include <cctype>
 #include <unordered_map>

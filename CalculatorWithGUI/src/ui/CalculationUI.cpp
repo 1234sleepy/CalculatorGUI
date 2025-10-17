@@ -1,11 +1,11 @@
-
-#include "../../include/calculators/BasicCalculator.h"
-#include "../../include/calculators/QuadraticCalculator.h"
-#include "../../include/calculators/TrigCalculator.h"
+﻿
+#include "calculators/BasicCalculator.h"
+#include "calculators/QuadraticCalculator.h"
+#include "calculators/TrigCalculator.h"
 
 #include "../../include/filters/InputFilter.h"
 
-#include "imgui.h"
+
 #include "../imguI/misc/cpp/imgui_stdlib.h" 
 
 #include "../../include/ui/CalculatorUI.h"
@@ -13,65 +13,82 @@
 
 #include <iostream>
 
-void RenderCalculatorUI(CalculatorUI& currentUI)
+const ImGuiWindowFlags CalculatorUI::imGuiWindowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar;
+
+const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(370, 20);
+const ImVec2 CalculatorUI::standardCalculatorUISize = ImVec2(180, 20);
+
+void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 {
-    ImGui::SetNextWindowSize(ImVec2(200, 100));
+    ImGui::SetNextWindowSize(ImVec2(200, 700));
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
 
     if (ImGui::Begin("UI", nullptr,
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+        CalculatorUI::imGuiWindowFlags))
     {
-        if (ImGui::Button("Basic") || currentUI == CalculatorUI::BasicCalc)
+        ImGui::SetCursorPosY(5);
+        ImGui::SetWindowFontScale(2.0f);
+        ImGui::Text("UI");
+        ImGui::SetWindowFontScale(1.0f);
+        ImGui::Separator();
+
+        if (ImGui::Button("Basic", standardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::BasicCalc)
         {
-            RenderBasicCalculator();
-            currentUI = CalculatorUI::BasicCalc;
+            CalculatorUI::renderBasicCalculator();
+            currentUI = CalculatorUI::calculatorTypes::BasicCalc;
         }
-        if (ImGui::Button("Quadratic") || currentUI == CalculatorUI::QuadraticCalc)
+        if (ImGui::Button("Quadratic", standardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::QuadraticCalc)
         {
-            RenderQuadraticCalculator();
-            currentUI = CalculatorUI::QuadraticCalc;
+            CalculatorUI::renderQuadraticCalculator();
+            currentUI = CalculatorUI::calculatorTypes::QuadraticCalc;
         }
-        if (ImGui::Button("Trig") || currentUI == CalculatorUI::TrigCalc)
+        if (ImGui::Button("Trig", standardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::TrigCalc)
         {
-            RenderTrigCalculator();
-            currentUI = CalculatorUI::TrigCalc;
+            CalculatorUI::renderTrigCalculator();
+            currentUI = CalculatorUI::calculatorTypes::TrigCalc;
         }
     }
     ImGui::End();
 }
 
-void RenderBasicCalculator()
+void CalculatorUI::renderBasicCalculator()
 {
     static char expression[256] = "";
-    static char prevExpression[256] = "";
     static double result = 0.0;
 
     ImGui::SetNextWindowSize(ImVec2(400, 700));
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
 
     if (ImGui::Begin("Basic Calculator", nullptr,
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+        CalculatorUI::imGuiWindowFlags))
     {
-        ImGui::InputTextWithHint("##Expression", "(less than 256 characters)",
+
+        ImGui::SetCursorPosY(5);
+        ImGui::SetWindowFontScale(2.0f);
+        ImGui::Text("Basic Calculator");
+        ImGui::SetWindowFontScale(1.0f);
+
+        ImGui::Separator();
+
+        ImGui::InputTextWithHint("##Expression", "(2+2)*2",
             expression, sizeof(expression),
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersCallback);
 
-        if (ImGui::Button("Evaluate"))
+        if (ImGui::Button("Evaluate", CalculatorUI::standardCalculatorBtnSize))
         {
             result = BasicCalculator::evaluateExpression(expression);
-            memcpy(prevExpression, expression, sizeof(expression));
+            //memcpy(prevExpression, expression, sizeof(expression));
             expression[0] = '\0';
         }
 
-        ImGui::Separator();
-        ImGui::Text("Expression: %s", prevExpression);
+        //ImGui::Text("Expression: %s", prevExpression);
         ImGui::Text("Result: %.6f", result);
     }
     ImGui::End();
 }
 
-void RenderQuadraticCalculator()
+void CalculatorUI::renderQuadraticCalculator()
 {
     static std::string expression = "";
     static double result = 0.0;
@@ -81,13 +98,13 @@ void RenderQuadraticCalculator()
 
 
     if (ImGui::Begin("Quadratic Calculator", nullptr,
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+        CalculatorUI::imGuiWindowFlags))
     {
         ImGui::InputTextWithHint("##Expression", "Type quadratic exprasion", &expression);
 
         if (ImGui::Button("Evaluate"))
         {
-            
+
         }
 
         ImGui::Separator();
@@ -97,7 +114,7 @@ void RenderQuadraticCalculator()
     ImGui::End();
 }
 
-void RenderTrigCalculator()
+void CalculatorUI::renderTrigCalculator()
 {
     static std::string expression = "";
     static double result = 0.0;
@@ -106,13 +123,13 @@ void RenderTrigCalculator()
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
 
     if (ImGui::Begin("Trig Calculator", nullptr,
-        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+        CalculatorUI::imGuiWindowFlags))
     {
         ImGui::InputTextWithHint("##Expression", "Type trig exprasion", &expression);
 
         if (ImGui::Button("Evaluate"))
         {
-           
+
         }
 
         ImGui::Separator();

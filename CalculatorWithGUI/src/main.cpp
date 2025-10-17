@@ -216,7 +216,7 @@ int main(int, char**)
     // Main loop
     bool done = false;
     bool bOpened = true;
-    CalculatorUI currentUI = CalculatorUI::BasicCalc;
+    CalculatorUI::calculatorTypes currentUI = CalculatorUI::calculatorTypes::BasicCalc;
     while (!done)
     {
        
@@ -245,7 +245,7 @@ int main(int, char**)
         ImGui::NewFrame();
         
         
-        RenderCalculatorUI(currentUI);
+        CalculatorUI::renderCalculatorUI(currentUI);
         
 
         ImGui::Render();

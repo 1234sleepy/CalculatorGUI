@@ -1,14 +1,27 @@
 #pragma once
 
-enum class CalculatorUI
+#include "imgui.h"
+
+class CalculatorUI
 {
-	BasicCalc,
-	QuadraticCalc,
-	TrigCalc
+public:
+	enum class calculatorTypes
+	{
+		BasicCalc,
+		QuadraticCalc,
+		TrigCalc
+	};
+
+	static const ImGuiWindowFlags imGuiWindowFlags;
+
+	static const ImVec2 standardCalculatorBtnSize;
+	static const ImVec2 standardCalculatorUISize;
+
+
+	static void renderCalculatorUI(calculatorTypes& currentUI);
+	static void renderBasicCalculator();
+	static void renderQuadraticCalculator();
+	static void renderTrigCalculator();
+
+
 };
-
-void RenderCalculatorUI(CalculatorUI& currentUI);
-void RenderBasicCalculator();
-void RenderQuadraticCalculator();
-void RenderTrigCalculator();
-

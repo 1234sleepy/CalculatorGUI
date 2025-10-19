@@ -14,24 +14,24 @@
 
 
 
-int BasicCalculator::getOperatorPrecedence(char op)
+BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char op)
 {
 	if (op == '+' || op == '-')
 	{
-		return 1;
+		return BasicCalculator::operatorPrecedence::AdditionSubstractionPrecedence;
 	}
 
 	if (op == '*' || op == '/')
 	{
-		return 2;
+		return BasicCalculator::operatorPrecedence::MultiplyDividePrecedence;
 	}
 
 	if (op == '^')
 	{
-		return 3;
+		return BasicCalculator::operatorPrecedence::PowPrecedence;
 	}
 
-	return 0;
+	return BasicCalculator::operatorPrecedence::OtherPrecedence;
 }
 
 std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::string& expr)

@@ -2,13 +2,15 @@
 
 #include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
 
+#include "BasicCalculator.h"
+
 #include <string>
 #include <vector>
 
-class QuadraticCalculator
+class QuadraticCalculator : BasicCalculator
 {
 public:
-    static double evaluateExpression(const char expression[256]);
+
 
 private:
 

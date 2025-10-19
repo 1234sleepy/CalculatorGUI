@@ -156,7 +156,7 @@ void CalculatorUI::renderQuadraticCalculator()
 
         if (ImGui::Button("Evaluate", CalculatorUI::standardCalculatorBtnSize))
         {
-            result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
+            //result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
         }
@@ -195,7 +195,7 @@ void CalculatorUI::renderTrigCalculator()
 
         if (ImGui::Button("Evaluate", CalculatorUI::standardCalculatorBtnSize))
         {
-            result = TrigCalculator::evaluateExpression(CalculatorUI::expression);
+            //result = TrigCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
         }

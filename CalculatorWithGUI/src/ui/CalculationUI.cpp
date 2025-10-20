@@ -132,7 +132,7 @@ void CalculatorUI::renderBasicCalculator()
 
 void CalculatorUI::renderQuadraticCalculator()
 {
-    static double result = 0.0;
+    static QuadraticCalculator::roots result = {0,0};
 
     ImGui::SetNextWindowSize(CalculatorUI::standardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -145,25 +145,25 @@ void CalculatorUI::renderQuadraticCalculator()
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Quadratic Calculator");
         ImGui::SetWindowFontScale(1.0f);
-
         ImGui::Separator();
 
         ImGui::SetNextItemWidth(CalculatorUI::standardCalculatorInputTextWithHintSize);
         ImGui::InputTextWithHint("##Expression", "ax^2+bx+c",
             CalculatorUI::expression, sizeof(CalculatorUI::expression),
             ImGuiInputTextFlags_CallbackCharFilter,
-            NoLettersCallback);
+            NoLettersEcceptXCallback);
 
         if (ImGui::Button("Evaluate", CalculatorUI::standardCalculatorBtnSize))
         {
-            //result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
+            result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
         }
 
         ImGui::SetWindowFontScale(1.5f);
         ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
-        ImGui::Text("Result: %.6f", result);
+        ImGui::Text("FirstRoot: %.6f", result.firstRoot);
+        ImGui::Text("SecondRoot: %.6f", result.secondRoot);
         ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();

@@ -14,6 +14,11 @@
 
 
 
+bool BasicCalculator::isOperator(char c)
+{
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+}
+
 BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char op)
 {
 	if (op == '+' || op == '-')

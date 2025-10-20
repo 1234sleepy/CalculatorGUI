@@ -30,6 +30,9 @@
     <ClInclude Include="include\calculators\TrigCalculator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\struct\QuadraticValues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CalculatorCore.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\calculators\TrigCalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\struct\QuadraticValues.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

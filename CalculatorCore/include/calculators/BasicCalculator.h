@@ -9,7 +9,6 @@ class BasicCalculator
 public:
     static double evaluateExpression(const char expression[256]);
 
-private:
 	enum class operatorPrecedence
 	{
 		AdditionSubstractionPrecedence = 1,
@@ -17,7 +16,10 @@ private:
 		PowPrecedence = 3,
 		OtherPrecedence = 0
 	};
+    static operatorPrecedence getOperatorPrecedence(char op);
+	static bool isOperator(char c);
+
+private:
     static std::vector<std::string> convertInfixToPostfix(const std::string& expr);
     static double evaluatePostfixExpression(const std::vector<std::string>& postfix);
-    static BasicCalculator::operatorPrecedence getOperatorPrecedence(char op);
 };

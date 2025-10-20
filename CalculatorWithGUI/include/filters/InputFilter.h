@@ -5,3 +5,4 @@
 #include <iostream>
 
 int NoLettersCallback(ImGuiInputTextCallbackData* data);
+int NoLettersEcceptXCallback(ImGuiInputTextCallbackData* data);

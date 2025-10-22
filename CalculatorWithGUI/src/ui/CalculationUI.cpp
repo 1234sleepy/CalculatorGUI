@@ -26,14 +26,14 @@ const std::array<CalculatorUI::functBtn, 9> CalculatorUI::buttonNames =
     CalculatorUI::functBtn("Pi", "P"),
 };
 
-const int CalculatorUI::programWidth = 600;
+const int CalculatorUI::programWidth = 700;
 const int CalculatorUI::programHeight = 700;
 
-const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(370, 20);
+const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(470, 20);
 const ImVec2 CalculatorUI::standardCalculatorUISize = ImVec2(180, 20);
-const ImVec2 CalculatorUI::standardCalculatorUIWindowSize = ImVec2(400, 400);
+const ImVec2 CalculatorUI::standardCalculatorUIWindowSize = ImVec2(700, 400);
 
-const double CalculatorUI::standardCalculatorInputTextWithHintSize = 370.0;
+const double CalculatorUI::standardCalculatorInputTextWithHintSize = 470.0;
 
 char CalculatorUI::CalculatorUI::expression[256] = "";
 char CalculatorUI::CalculatorUI::prevExpression[256] = "";
@@ -132,7 +132,7 @@ void CalculatorUI::renderBasicCalculator()
 
 void CalculatorUI::renderQuadraticCalculator()
 {
-    static QuadraticCalculator::roots result = {0,0};
+    static QuadraticCalculator::roots result = {"0", "0", false};
 
     ImGui::SetNextWindowSize(CalculatorUI::standardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -144,6 +144,8 @@ void CalculatorUI::renderQuadraticCalculator()
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Quadratic Calculator");
+        ImGui::SetWindowFontScale(1.5f);
+        ImGui::Text("Only simplified quadratic\nexpression such as\n7x^2-4x^2+23x+12x+1290-120/18");
         ImGui::SetWindowFontScale(1.0f);
         ImGui::Separator();
 
@@ -162,8 +164,9 @@ void CalculatorUI::renderQuadraticCalculator()
 
         ImGui::SetWindowFontScale(1.5f);
         ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
-        ImGui::Text("FirstRoot: %.6f", result.firstRoot);
-        ImGui::Text("SecondRoot: %.6f", result.secondRoot);
+        ImGui::Text("Imaginary roots: %s", result.isImaginary ? "Yes" : "No");
+        ImGui::Text("FirstRoot: %s", result.firstRoot.c_str());
+        ImGui::Text("SecondRoot: %s", result.secondRoot.c_str());
         ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();
@@ -215,7 +218,7 @@ void CalculatorUI::addToExpression(std::string addition)
 
 void CalculatorUI::renderFuncExprButtons()
 {
-    ImGui::SetNextWindowSize(ImVec2(600, 300));
+    ImGui::SetNextWindowSize(ImVec2(700, 300));
     ImGui::SetNextWindowPos(ImVec2(0, 400), ImGuiCond_Once);
 
     if (ImGui::Begin("Functions/Expressions", nullptr,

@@ -54,7 +54,7 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
         }
     };
 
-    for (size_t i = 0; i < expr.size(); ++i) 
+    for (size_t i = 0; i < expr.size(); i++) 
     {
         char c = expr[i];
 

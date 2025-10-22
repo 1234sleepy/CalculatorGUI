@@ -7,15 +7,18 @@
 #include "BasicCalculator.h"
 
 #include <string>
+#include <iostream>
 #include <vector>
 
 class QuadraticCalculator : public BasicCalculator
 {
 public:
+
 	struct roots
 	{
-		double firstRoot;
-		double secondRoot;
+		std::string firstRoot;
+		std::string secondRoot;
+		bool isImaginary;
 	};
 
     static roots evaluateExpression(const char expression[256]);

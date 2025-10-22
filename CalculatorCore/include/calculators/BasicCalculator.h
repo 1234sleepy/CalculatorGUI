@@ -16,6 +16,7 @@ public:
 		PowPrecedence = 3,
 		OtherPrecedence = 0
 	};
+
     static operatorPrecedence getOperatorPrecedence(char op);
 	static bool isOperator(char c);
 

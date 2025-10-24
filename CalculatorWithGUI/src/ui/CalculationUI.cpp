@@ -201,7 +201,7 @@ void CalculatorUI::renderTrigCalculator()
         ImGui::Separator();
 
         ImGui::SetNextItemWidth(CalculatorUI::standardCalculatorInputTextWithHintSize);
-        ImGui::InputTextWithHint("##Expression", "sin(30)+cos(P)",
+        ImGui::InputTextWithHint("##Expression", "sin(30)+cos(\u03C0)",
             CalculatorUI::expression, sizeof(CalculatorUI::expression),
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersCallback);
@@ -255,7 +255,7 @@ void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentU
             }
             else
             {
-                ImVec4 buttonColor = ImVec4(0.10588f, 0.10588f, 0.29020f, 1.0f);
+                ImVec4 buttonColor = ImVec4(0.255f, 0.18f, 0.075f, 1.00f);
                 ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
                 ImGui::BeginDisabled();
                 if (ImGui::Button(btn.name.c_str(), ImVec2(40, 40)))

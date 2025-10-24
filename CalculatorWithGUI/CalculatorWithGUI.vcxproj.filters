@@ -84,4 +84,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\NotoSans.ttf" />
+  </ItemGroup>
 </Project>

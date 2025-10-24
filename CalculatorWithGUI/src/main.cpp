@@ -179,6 +179,8 @@ int WINAPI WinMain(
     style.Colors[ImGuiCol_ChildBg].w = 0.0f;
     style.Colors[ImGuiCol_PopupBg].w = 0.0f;
 
+
+
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
 

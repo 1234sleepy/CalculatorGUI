@@ -11,6 +11,7 @@ class CalculatorUI
 public:
 	enum class calculatorTypes
 	{
+		NoCalc,
 		BasicCalc,
 		QuadraticCalc,
 		TrigCalc
@@ -20,9 +21,23 @@ public:
 	{
 		std::string name;
 		std::string value;
+		calculatorTypes uprovedTypes[3];
+
+		bool isUpproper(calculatorTypes renderType)
+		{
+			for(auto type : uprovedTypes)
+			{
+				if (renderType == type)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	};
 
-	static const std::array<functBtn, 9> buttonNames;
+	static const std::array<functBtn, 17> buttonNames;
 
 	static const int programWidth;
 	static const int programHeight;
@@ -44,7 +59,7 @@ public:
 	static void renderQuadraticCalculator();
 	static void renderTrigCalculator();
 
-	static void renderFuncExprButtons();
+	static void renderFuncExprButtons(CalculatorUI::calculatorTypes& currentUI);
 
 	static void addToExpression(std::string addition);
 

@@ -20,7 +20,6 @@ public:
     static operatorPrecedence getOperatorPrecedence(char op);
 	static bool isOperator(char c);
 
-private:
     static std::vector<std::string> convertInfixToPostfix(const std::string& expr);
     static double evaluatePostfixExpression(const std::vector<std::string>& postfix);
 };

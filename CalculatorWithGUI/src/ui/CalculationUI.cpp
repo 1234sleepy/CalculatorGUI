@@ -2,6 +2,7 @@
 #include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
 #include "../../../CalculatorCore/include/calculators/QuadraticCalculator.h"
 #include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
+#include "../../../CalculatorCore/include/history/History.h"
 
 #include "../../include/filters/InputFilter.h"
 
@@ -41,7 +42,7 @@ const int CalculatorUI::programHeight = 700;
 
 const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(470, 20);
 const ImVec2 CalculatorUI::standardCalculatorUISize = ImVec2(180, 20);
-const ImVec2 CalculatorUI::standardCalculatorUIWindowSize = ImVec2(700, 400);
+const ImVec2 CalculatorUI::standardCalculatorUIWindowSize = ImVec2(700, 200);
 
 const double CalculatorUI::standardCalculatorInputTextWithHintSize = 470.0;
 
@@ -99,6 +100,45 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 
 
     CalculatorUI::renderFuncExprButtons(currentUI);
+
+ImGui::SetNextWindowSize(ImVec2(500, 200));
+ImGui::SetNextWindowPos(ImVec2(200, 200));
+
+if (ImGui::Begin("Scrollable Window", nullptr,
+    CalculatorUI::imGuiWindowFlags))
+{
+    ImGui::SetCursorPosY(5);
+    ImGui::SetWindowFontScale(2.0f);
+    ImGui::Text("History");
+    ImGui::SetWindowFontScale(1.0f);
+    if (ImGui::BeginChild("ScrollableRegion", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar    
+        | ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse))
+    {
+        auto hist = History::getHistory();
+
+        while (!hist.empty())
+        {
+            const auto& element = hist.top();
+
+            if (ImGui::Button(element.exprRes.c_str(), ImVec2(450,20)))
+            {
+                memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
+                memcpy(CalculatorUI::expression, element.expr.c_str(), sizeof(element));
+            }
+
+            hist.pop();
+        }
+
+    }
+    ImGui::EndChild();
+
+}
+ImGui::End();
+
+ 
+
 }
 
 void CalculatorUI::renderBasicCalculator()
@@ -129,7 +169,12 @@ void CalculatorUI::renderBasicCalculator()
         {
             result = BasicCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
+            
+            History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " = " + std::to_string(result) });
+
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
+
+
         }
 
         ImGui::SetWindowFontScale(1.5f);
@@ -169,6 +214,10 @@ void CalculatorUI::renderQuadraticCalculator()
         {
             result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
+
+            History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " x1 = " + result.firstRoot + " x2= " + result.secondRoot});
+
+
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
         }
 
@@ -201,7 +250,7 @@ void CalculatorUI::renderTrigCalculator()
         ImGui::Separator();
 
         ImGui::SetNextItemWidth(CalculatorUI::standardCalculatorInputTextWithHintSize);
-        ImGui::InputTextWithHint("##Expression", "sin(30)+cos(\u03C0)",
+        ImGui::InputTextWithHint("##Expression", "sin(30)+cos(P)",
             CalculatorUI::expression, sizeof(CalculatorUI::expression),
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersCallback);
@@ -210,6 +259,9 @@ void CalculatorUI::renderTrigCalculator()
         {
             result = TrigCalculator::evaluateExpression(CalculatorUI::expression);
             memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
+
+            History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " = " + std::to_string(result) });
+
             memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
         }
 

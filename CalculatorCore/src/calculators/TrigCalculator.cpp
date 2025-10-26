@@ -39,13 +39,12 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
 
         double val = 0.0;
 
-        if (tr.str == "P")
-        {
-            tr.str = std::to_string(std::round(M_PI * 1000000.0) / 1000000.0);
-        }
 
 
-        val = std::stod(tr.str);
+        if (tr.argument == "P")
+            val = std::round(M_PI * 1000000.0) / 1000000.0;
+        else
+            val = std::stod(tr.argument);
 
         double radians = val * M_PI / 180.0;
         double value = 0.0;
@@ -66,22 +65,27 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
         {
             value = value = 1.0 / std::tan(radians);
         }
-        else if (tr.fucnction == "asin")
+        else if (val >= -1.0 && val <= 1.0)
         {
-            value = std::asin(val) * 180.0 / M_PI;
+            if (tr.fucnction == "asin")
+            {
+                value = std::asin(val);
+            }
+            else if (tr.fucnction == "acos")
+            {
+                value = std::acos(val);
+            }
+            else if (tr.fucnction == "atan")
+            {
+                value = std::atan(val);
+            }
+            else if (tr.fucnction == "acot")
+            {
+                value = std::atan(1.0 / val);
+            }
         }
-        else if (tr.fucnction == "acos")
-        {
-            value = std::acos(val) * 180.0 / M_PI;
-        }
-        else if (tr.fucnction == "atan")
-        {
-            value = std::atan(val) * 180.0 / M_PI;
-        }
-        else if (tr.fucnction == "acot")
-        {
-            value = 90.0 - (std::atan(val) * 180.0 / M_PI);
-        }
+
+        
 
         result.replace(match.position(), match.length(), std::to_string(value));
     }

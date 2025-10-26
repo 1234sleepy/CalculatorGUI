@@ -13,7 +13,7 @@ public:
 	struct trigMatch
 	{
 		std::string fucnction;
-		std::string str;
+		std::string argument;
 	};
 
 

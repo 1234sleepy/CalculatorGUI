@@ -48,6 +48,9 @@
     <ClCompile Include="src\filters\InputFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vendor\imguI\imconfig.h">
@@ -81,6 +84,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\filters\InputFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialogConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

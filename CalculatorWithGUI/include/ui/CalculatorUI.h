@@ -3,7 +3,16 @@
 #include "../../vendor/imguI/imgui.h"
 
 
+#include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
+#include "../../../CalculatorCore/include/calculators/QuadraticCalculator.h"
+#include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
+#include "../../../CalculatorCore/include/history/History.h"
+
+#include "../../include/filters/InputFilter.h"
+
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 #include <array>
 
 class CalculatorUI
@@ -47,6 +56,8 @@ public:
 
 	static const ImGuiWindowFlags imGuiWindowFlags;
 
+	static bool isImportingFile;
+
 	static const ImVec2 standardCalculatorBtnSize;
 	static const ImVec2 standardCalculatorUISize;
 	static const ImVec2 standardCalculatorUIWindowSize;
@@ -65,4 +76,9 @@ public:
 
 	static void changeCalc(calculatorTypes& currentUI, calculatorTypes type);
 
+	static void importExpressions(std::filesystem::path filePathName, CalculatorUI::calculatorTypes& currentUI);
+
+	static void basicCalcEvaluation(double& result);
+	static void quadraticCalcEvaluation(QuadraticCalculator::roots& result);
+	static void trigCalcEvaluation(double& result);
 };

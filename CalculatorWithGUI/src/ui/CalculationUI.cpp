@@ -1,10 +1,12 @@
 ﻿
+#include "../../include/detection/detectionOfType.h"
 
 #include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
 
 #include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
 
 #include "../../include/ui/CalculatorUI.h"
+
 
 
 
@@ -95,13 +97,14 @@ void CalculatorUI::importExpressions(std::filesystem::path filePathName, Calcula
     if (importFile.is_open())
     {
         CalculatorUI::isImportingFile = true;
-
         while (std::getline(importFile, line))
         {
             if (!line.empty())
             {
                 strcpy_s(CalculatorUI::expression, sizeof(CalculatorUI::expression), line.c_str());
-                switch (currentUI)
+                CalculatorUI::calculatorTypes expressionType = static_cast<CalculatorUI::calculatorTypes>(detectionOfType::detectType(CalculatorUI::expression));
+                
+                switch (expressionType)
                 {
                     case CalculatorUI::calculatorTypes::BasicCalc:
                         CalculatorUI::renderBasicCalculator();
@@ -310,7 +313,6 @@ void CalculatorUI::renderTrigCalculator()
     if (ImGui::Begin("Trig Calculator", nullptr,
         CalculatorUI::imGuiWindowFlags))
     {
-
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Trig Calculator");

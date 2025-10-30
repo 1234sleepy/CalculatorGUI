@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.cpp" />
+    <ClCompile Include="src\detection\detectionOfType.cpp" />
     <ClCompile Include="src\filters\InputFilter.cpp" />
     <ClCompile Include="src\ui\CalculationUI.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.h" />
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="include\detection\detectionOfType.h" />
     <ClInclude Include="include\filters\InputFilter.h" />
     <ClInclude Include="include\ui\CalculatorUI.h" />
     <ClInclude Include="vendor\imguI\backends\imgui_impl_dx12.h" />

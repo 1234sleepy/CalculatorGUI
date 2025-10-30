@@ -14,6 +14,7 @@
 #include <algorithm>
 
 
+
 double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
 {
     std::stack<double> values;

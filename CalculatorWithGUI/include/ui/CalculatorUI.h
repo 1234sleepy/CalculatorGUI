@@ -3,10 +3,12 @@
 #include "../../vendor/imguI/imgui.h"
 
 
+
 #include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
 #include "../../../CalculatorCore/include/calculators/QuadraticCalculator.h"
 #include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
 #include "../../../CalculatorCore/include/history/History.h"
+
 
 #include "../../include/filters/InputFilter.h"
 
@@ -20,10 +22,10 @@ class CalculatorUI
 public:
 	enum class calculatorTypes
 	{
-		NoCalc,
-		BasicCalc,
-		QuadraticCalc,
-		TrigCalc
+		NoCalc = 0,
+		BasicCalc = 1,
+		QuadraticCalc = 2,
+		TrigCalc = 3
 	};
 
 	struct functBtn

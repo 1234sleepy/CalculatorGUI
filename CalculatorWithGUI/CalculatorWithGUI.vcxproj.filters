@@ -51,6 +51,9 @@
     <ClCompile Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\detection\detectionOfType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vendor\imguI\imconfig.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialogConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\detection\detectionOfType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

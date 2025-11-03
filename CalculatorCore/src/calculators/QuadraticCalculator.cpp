@@ -293,9 +293,36 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(const char* exp
     return { a, b, c };
 }
 
+bool QuadraticCalculator::isQuadraticExpression(const char* expr)
+{
+    std::string expression = expr;
+
+    bool isX = false;
+    bool isPowX = false;
+
+    for (size_t i = 0; i < expression.length(); i++)
+    {
+        if (expression[i] == 'x')
+        {
+            isX = true;
+            if (expression[i] + 1 == '^')
+            {
+                isPowX = true;
+            }
+        }
+    }
+
+    return isX && isPowX ? true : false;
+}
+
 
 QuadraticCalculator::roots QuadraticCalculator::evaluateExpression(const char expression[256])
 {
+    if (!isQuadraticExpression(expression))
+    {
+        return QuadraticCalculator::roots{"NAN", "NAN", false};
+    }
+
     auto postfix = convertInfixToPostfix(expression);
 
     auto values = evaluateQuadraticExpression(expression);

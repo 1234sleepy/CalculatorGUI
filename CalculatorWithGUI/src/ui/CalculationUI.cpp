@@ -61,6 +61,7 @@ void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, Calculat
 void CalculatorUI::basicCalcEvaluation(double& result)
 {
     result = BasicCalculator::evaluateExpression(CalculatorUI::expression);
+
     memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
 
     History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " = " + std::to_string(result) });

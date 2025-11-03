@@ -129,43 +129,51 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
 
 double BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>& postfix)
 {
-	std::stack<double> values;
+    std::stack<double> values;
 
-	static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
-		{"+", [](double a, double b) { return a + b; }},
-		{"-", [](double a, double b) { return a - b; }},
-		{"*", [](double a, double b) { return a * b; }},
-		{"/", [](double a, double b) { return a / b; }},
-		{"^", [](double a, double b) { return std::pow(a, b); }}
-	};
+    static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
+        {"+", [](double a, double b) { return a + b; }},
+        {"-", [](double a, double b) { return a - b; }},
+        {"*", [](double a, double b) { return a * b; }},
+        {"/", [](double a, double b) { return a / b; }},
+        {"^", [](double a, double b) { return std::pow(a, b); }}
+    };
 
-	for (const auto& token : postfix)
-	{
-		if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
-		{
-			values.push(std::stod(token));
-		}
-		else
-		{
+    for (const auto& token : postfix)
+    {
+        if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
+        {
+            values.push(std::stod(token));
+        }
+        else
+        {
+            if (values.size() < 2)
+            {
+                return NAN;
+            }
 
-			double b = values.top(); values.pop();
-			double a = values.top(); values.pop();
+            double b = values.top(); values.pop();
+            double a = values.top(); values.pop();
 
-			auto it = ops.find(token);
-			if (it != ops.end())
-			{
-				double result = it->second(a, b);
-				values.push(result);
-			}
-			else
-			{
-				std::cerr << "Unknown operator: " << token << '\n';
-				return NULL;
-			}
-		}
-	}
+            auto it = ops.find(token);
+            if (it != ops.end())
+            {
+                double result = it->second(a, b);
+                values.push(result);
+            }
+            else
+            {
+                return NAN;
+            }
+        }
+    }
 
-	return values.top();
+    if (values.empty())
+    {
+        return NAN;
+    }
+
+    return values.top();
 }
 
 double BasicCalculator::evaluateExpression(const char expression[256])

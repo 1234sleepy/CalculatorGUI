@@ -32,4 +32,6 @@ private:
     static std::vector<std::string> convertInfixToPostfix(const char* expr);
 
     static roots getRoots(QuadraticValues val);
+
+	static bool isQuadraticExpression(const char* expr);
 };

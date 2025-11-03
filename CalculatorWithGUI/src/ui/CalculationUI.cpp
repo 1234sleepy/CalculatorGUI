@@ -273,7 +273,6 @@ void CalculatorUI::renderQuadraticCalculator()
     if (ImGui::Begin("Quadratic Calculator", nullptr,
         CalculatorUI::imGuiWindowFlags))
     {
-
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Quadratic Calculator");

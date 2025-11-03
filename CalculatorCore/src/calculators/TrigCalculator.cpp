@@ -32,7 +32,7 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
         std::sregex_iterator()
     };
 
-    for (auto it = matches.rbegin(); it != matches.rend(); it++)
+    for (auto it = matches.rbegin(); it != matches.rend(); ++it)
     {
         std::smatch match = *it;
         TrigCalculator::trigMatch tr = { match[1], match[2] };

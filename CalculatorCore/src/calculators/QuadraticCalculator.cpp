@@ -41,7 +41,7 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
 
     std::string num;
 
-    for (size_t i = 0; i < expr.size(); i++)
+    for (size_t i = 0; i < expr.size(); ++i)
     {
         char c = expr[i];
         if (std::isspace(c))
@@ -130,7 +130,7 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(const char* 
             }
         };
 
-    for (size_t i = 0; expr[i] != '\0'; i++)
+    for (size_t i = 0; expr[i] != '\0'; ++i)
     {
         char c = expr[i];
         if (std::isspace(c))
@@ -229,7 +229,7 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(const char* exp
 
     s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
 
-    for (size_t i = 0; i < s.size(); i++)
+    for (size_t i = 0; i < s.size(); ++i)
     {
         if (s[i] == 'x' && (i == 0 || (!std::isdigit(s[i - 1]) && s[i - 1] != '.')))
         {
@@ -252,7 +252,7 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(const char* exp
         }
 
         size_t start = i;
-        while (i < s.size() && s[i] != '+' && s[i] != '-') i++;
+        while (i < s.size() && s[i] != '+' && s[i] != '-') ++i;
         term = s.substr(start, i - start);
         if (term.empty())
         {

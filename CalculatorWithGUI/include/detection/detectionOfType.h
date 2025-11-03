@@ -8,5 +8,4 @@ class detectionOfType
 {
 public:
 	static int detectType(std::string expression);
-
 };

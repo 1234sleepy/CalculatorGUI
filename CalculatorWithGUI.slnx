@@ -5,5 +5,7 @@
   </Configurations>
   <Project Path="CalculatorCore/CalculatorCore.vcxproj" Id="f1ef82df-c4fb-4774-90f6-040ed0ddf9aa" />
   <Project Path="CalculatorWithGUI/CalculatorWithGUI.vcxproj" Id="fd975304-f60d-4305-8e12-b91829d00dbf" />
-  <Project Path="CalculatorWithGUITest/CalculatorWithGUITest.vcxproj" />
+  <Project Path="CalculatorWithGUITest/CalculatorWithGUITest.vcxproj">
+    <Build Solution="Release|x64" Project="false" />
+  </Project>
 </Solution>

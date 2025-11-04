@@ -127,7 +127,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>dxgi.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

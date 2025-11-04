@@ -38,6 +38,8 @@ const std::array<CalculatorUI::functBtn, 17> CalculatorUI::buttonNames =
 const int CalculatorUI::programWidth = 700;
 const int CalculatorUI::programHeight = 700;
 
+int CalculatorUI::countOfExportFiles = 1;
+
 const ImVec2 CalculatorUI::standardCalculatorBtnSize = ImVec2(470, 20);
 const ImVec2 CalculatorUI::standardCalculatorUISize = ImVec2(180, 20);
 const ImVec2 CalculatorUI::standardCalculatorUIWindowSize = ImVec2(700, 200);
@@ -123,9 +125,29 @@ void CalculatorUI::importExpressions(std::filesystem::path filePathName, Calcula
         CalculatorUI::isImportingFile = false;
         importFile.close();
     }
-    else 
-    {
+}
 
+void CalculatorUI::exportExpressions()
+{
+    std::filesystem::path path = "export\\expressions" + std::to_string( CalculatorUI::countOfExportFiles) + ".txt";
+    
+    CalculatorUI::countOfExportFiles++;
+
+    if (!std::filesystem::exists("export"))
+    {
+        std::filesystem::create_directory("export");
+    }
+
+    std::ofstream outputFile(path);
+    if (outputFile.is_open())   
+    {
+        auto hist = History::getHistory();
+        while (!hist.empty())
+        {
+            const auto& element = hist.top();
+            outputFile << element.exprRes << "\n";
+            hist.pop();
+        }
     }
 }
 
@@ -147,6 +169,12 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
             IGFD::FileDialogConfig config;
             config.path = ".";
             ImGuiFileDialog::Instance()->OpenDialog("Input", "Choose File", ".txt", config);
+        }
+        ImGui::SameLine(0.0f, 87.0f);
+        
+        if (ImGui::Button("Export"))
+        {
+            CalculatorUI::exportExpressions();
         }
 
         if (ImGuiFileDialog::Instance()->Display("Input")) {

@@ -53,6 +53,8 @@ public:
 	static const int programWidth;
 	static const int programHeight;
 
+	static int countOfExportFiles;
+
 	static char expression[256];
 	static char prevExpression[256];
 
@@ -79,6 +81,7 @@ public:
 	static void changeCalc(calculatorTypes& currentUI, calculatorTypes type);
 
 	static void importExpressions(std::filesystem::path filePathName, CalculatorUI::calculatorTypes& currentUI);
+	static void exportExpressions();
 
 	static void basicCalcEvaluation(double& result);
 	static void quadraticCalcEvaluation(QuadraticCalculator::roots& result);

@@ -183,7 +183,7 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(const char* 
     return output;
 }
 
-QuadraticCalculator::roots QuadraticCalculator::getRoots(QuadraticValues val)
+QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues val)
 {
     roots r{ "0", "0", false};
 
@@ -193,7 +193,7 @@ QuadraticCalculator::roots QuadraticCalculator::getRoots(QuadraticValues val)
 
         r.isImaginary = false;
 
-        return r;
+        return {r, true, ""};
     }
 
     double discriminant = val.b * val.b - 4 * val.a * val.c;
@@ -219,7 +219,7 @@ QuadraticCalculator::roots QuadraticCalculator::getRoots(QuadraticValues val)
     r.firstRoot = r.firstRoot.substr(0, 255);
     r.secondRoot = r.secondRoot.substr(0, 255);
 
-    return r;
+    return { r, true, "" };
 }
 
 
@@ -316,16 +316,16 @@ bool QuadraticCalculator::isQuadraticExpression(const char* expr)
 }
 
 
-QuadraticCalculator::roots QuadraticCalculator::evaluateExpression(const char expression[256])
+QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(const char expression[256])
 {
     if (!isQuadraticExpression(expression))
     {
-        return QuadraticCalculator::roots{"NAN", "NAN", false};
+        return QuadraticCalculator::CalcResult{ {"NAN" ,"NAN" ,false}, false, "This is not quadratic expression" };
     }
 
     auto postfix = convertInfixToPostfix(expression);
 
-    auto values = evaluateQuadraticExpression(expression);
+	auto values = evaluateQuadraticExpression(expression);
 
     return getRoots(values);
 }

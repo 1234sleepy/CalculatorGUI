@@ -12,6 +12,8 @@ public:
 		std::string exprRes;
 	};
 
+	static int historyCount;
+
 	static void addHistory(historySave expression);
 	static std::stack<historySave> getHistory();
 private:

@@ -33,7 +33,8 @@ const std::array<CalculatorUI::functBtn, 17> CalculatorUI::buttonNames =
     CalculatorUI::functBtn("acot", "acot()", {CalculatorUI::calculatorTypes::TrigCalc}),
 };
 
-
+bool CalculatorUI::isErrorHandlering = false;
+std::string CalculatorUI::errorMsg = "";
 
 const int CalculatorUI::programWidth = 700;
 const int CalculatorUI::programHeight = 700;
@@ -60,33 +61,45 @@ void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, Calculat
     memset(CalculatorUI::CalculatorUI::prevExpression, 0, sizeof(CalculatorUI::CalculatorUI::prevExpression));
 }
 
-void CalculatorUI::basicCalcEvaluation(double& result)
+void CalculatorUI::basicCalcEvaluation(BasicCalculator::CalcResult& result)
 {
     result = BasicCalculator::evaluateExpression(CalculatorUI::expression);
 
+    CalculatorUI::errorHandler(result.success, result.errorMsg);
+
     memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
 
-    History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " = " + std::to_string(result) });
+    History::addHistory({ std::string(CalculatorUI::expression), std::to_string(History::historyCount) + ". " + std::string(CalculatorUI::expression) + " = " + std::to_string(result.value)});
+    History::historyCount++;
+
 
     memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
 }
 
-void CalculatorUI::quadraticCalcEvaluation(QuadraticCalculator::roots& result)
+void CalculatorUI::quadraticCalcEvaluation(QuadraticCalculator::CalcResult& result)
 {
     result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
+
+    CalculatorUI::errorHandler(result.success, result.errorMsg);
+
     memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
 
-    History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " x1 = " + result.firstRoot + " x2= " + result.secondRoot });
+    History::addHistory({ std::string(CalculatorUI::expression), std::to_string(History::historyCount) + ". " + std::string(CalculatorUI::expression) + " x1 = " + result.value.firstRoot + " x2= " + result.value.secondRoot });
+    History::historyCount++;
 
     memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
 }
 
-void CalculatorUI::trigCalcEvaluation(double& result)
+void CalculatorUI::trigCalcEvaluation(TrigCalculator::CalcResult& result)
 {
     result = TrigCalculator::evaluateExpression(CalculatorUI::expression);
+
+    CalculatorUI::errorHandler(result.success, result.errorMsg);
+
     memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
 
-    History::addHistory({ std::string(CalculatorUI::expression), std::string(CalculatorUI::expression) + " = " + std::to_string(result) });
+    History::addHistory({ std::string(CalculatorUI::expression), std::to_string(History::historyCount) + ". " + std::string(CalculatorUI::expression) + " = " + std::to_string(result.value) });
+    History::historyCount++;
 
     memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
 }
@@ -159,6 +172,26 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
     if (ImGui::Begin("UI", nullptr,
         CalculatorUI::imGuiWindowFlags))
     {
+        if (isErrorHandlering)
+        {
+            ImGui::OpenPopup("Error");
+
+            if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+            {
+                ImGui::Text("%s", CalculatorUI::errorMsg.c_str());
+
+                if (ImGui::Button("OK"))
+                {
+                    ImGui::CloseCurrentPopup();
+                    CalculatorUI::isErrorHandlering = false;
+                    CalculatorUI::errorMsg = "";
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
+
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("UI");
@@ -257,7 +290,7 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 
 void CalculatorUI::renderBasicCalculator()
 {
-    static double result = 0.0;
+    static BasicCalculator::CalcResult result = {};
 
     ImGui::SetNextWindowSize(CalculatorUI::standardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -294,7 +327,7 @@ void CalculatorUI::renderBasicCalculator()
 
 void CalculatorUI::renderQuadraticCalculator()
 {
-    static QuadraticCalculator::roots result = {"0", "0", false};
+    static QuadraticCalculator::CalcResult result = {};
 
     ImGui::SetNextWindowSize(CalculatorUI::standardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -323,9 +356,9 @@ void CalculatorUI::renderQuadraticCalculator()
 
         ImGui::SetWindowFontScale(1.5f);
         ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
-        ImGui::Text("Imaginary roots: %s", result.isImaginary ? "Yes" : "No");
-        ImGui::Text("FirstRoot: %s", result.firstRoot.c_str());
-        ImGui::Text("SecondRoot: %s", result.secondRoot.c_str());
+        ImGui::Text("Imaginary roots: %s", result.value.isImaginary ? "Yes" : "No");
+        ImGui::Text("FirstRoot: %s", result.value.firstRoot.c_str());
+        ImGui::Text("SecondRoot: %s", result.value.secondRoot.c_str());
         ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();
@@ -333,7 +366,7 @@ void CalculatorUI::renderQuadraticCalculator()
 
 void CalculatorUI::renderTrigCalculator()
 {
-    static double result = 0.0;
+    static TrigCalculator::CalcResult result = {};
 
     ImGui::SetNextWindowSize(CalculatorUI::standardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -361,7 +394,7 @@ void CalculatorUI::renderTrigCalculator()
 
         ImGui::SetWindowFontScale(1.5f);
         ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
-        ImGui::Text("Result: %.6f", result);
+        ImGui::Text("Result: %.6f", result.value);
         ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();
@@ -427,4 +460,13 @@ void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentU
         }
     }
     ImGui::End();
+}
+
+void CalculatorUI::errorHandler(bool status, std::string msg)
+{
+    if (!msg.empty() && status == false)
+    {
+        CalculatorUI::isErrorHandlering = true;
+        CalculatorUI::errorMsg = msg;
+    }
 }

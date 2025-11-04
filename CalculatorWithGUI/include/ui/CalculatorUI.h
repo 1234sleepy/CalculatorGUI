@@ -55,6 +55,10 @@ public:
 
 	static int countOfExportFiles;
 
+	static bool isErrorHandlering;
+	static std::string errorMsg;
+
+
 	static char expression[256];
 	static char prevExpression[256];
 
@@ -83,7 +87,11 @@ public:
 	static void importExpressions(std::filesystem::path filePathName, CalculatorUI::calculatorTypes& currentUI);
 	static void exportExpressions();
 
-	static void basicCalcEvaluation(double& result);
-	static void quadraticCalcEvaluation(QuadraticCalculator::roots& result);
-	static void trigCalcEvaluation(double& result);
+	static void basicCalcEvaluation(BasicCalculator::CalcResult& result);
+	static void quadraticCalcEvaluation(QuadraticCalculator::CalcResult& result);
+	static void trigCalcEvaluation(TrigCalculator::CalcResult& result);
+
+	static void errorHandler(bool status, std::string msg);
+
+
 };

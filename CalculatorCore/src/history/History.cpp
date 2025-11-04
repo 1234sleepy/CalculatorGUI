@@ -4,6 +4,8 @@
 
 std::stack<History::historySave> History::history;
 
+int History::historyCount = 1;
+
 void History::addHistory(History::historySave expression) 
 {
 	History::history.push(expression);

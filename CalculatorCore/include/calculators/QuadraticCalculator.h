@@ -21,8 +21,15 @@ public:
 		bool isImaginary;
 	};
 
-    static roots evaluateExpression(const char expression[256]);
 
+	struct CalcResult
+	{
+		roots value;
+		bool success;
+		std::string errorMsg;
+	};
+
+    static CalcResult evaluateExpression(const char expression[256]);
 private:
 
     static QuadraticValues evaluateQuadraticExpression(const char* expr);
@@ -31,7 +38,7 @@ private:
 
     static std::vector<std::string> convertInfixToPostfix(const char* expr);
 
-    static roots getRoots(QuadraticValues val);
+    static CalcResult getRoots(QuadraticValues val);
 
 	static bool isQuadraticExpression(const char* expr);
 };

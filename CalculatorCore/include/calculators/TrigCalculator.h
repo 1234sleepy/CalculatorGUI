@@ -17,7 +17,7 @@ public:
 	};
 
 
-	static double evaluateExpression(const char expression[256]);
+	static CalcResult evaluateExpression(const char expression[256]);
 
 private:
 	static std::string evaluateAllTrigFunctions(const char expression[256]);

@@ -127,7 +127,7 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
     return output;
 }
 
-double BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>& postfix)
+BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>& postfix)
 {
     std::stack<double> values;
 
@@ -149,34 +149,40 @@ double BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>
         {
             if (values.size() < 2)
             {
-                return NAN;
+                return {NAN, false, "Not correct exprassion"};
             }
 
             double b = values.top(); values.pop();
             double a = values.top(); values.pop();
-
             auto it = ops.find(token);
+
             if (it != ops.end())
             {
                 double result = it->second(a, b);
+
+                if (std::isnan(result) && b == 0)
+                {
+                    return { NAN, false, "Division on 0" };
+                }
+
                 values.push(result);
             }
             else
             {
-                return NAN;
+                return { NAN, false, "Not correct exprassion" };
             }
         }
     }
 
     if (values.empty())
     {
-        return NAN;
+        return { NAN, false, "Not correct exprassion" };;
     }
 
-    return values.top();
+	return { values.top(), true, "" };
 }
 
-double BasicCalculator::evaluateExpression(const char expression[256])
+BasicCalculator::CalcResult BasicCalculator::evaluateExpression(const char expression[256])
 {
 	std::string expr = expression;
 

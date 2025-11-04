@@ -7,7 +7,6 @@
 class BasicCalculator
 {
 public:
-    static double evaluateExpression(const char expression[256]);
 
 	enum class operatorPrecedence
 	{
@@ -17,9 +16,17 @@ public:
 		OtherPrecedence = 0
 	};
 
+	struct CalcResult
+	{
+		double value;          
+		bool success;          
+		std::string errorMsg;
+	};
+
+    static CalcResult evaluateExpression(const char expression[256]);
     static operatorPrecedence getOperatorPrecedence(char op);
 	static bool isOperator(char c);
 
     static std::vector<std::string> convertInfixToPostfix(const std::string& expr);
-    static double evaluatePostfixExpression(const std::vector<std::string>& postfix);
+    static CalcResult evaluatePostfixExpression(const std::vector<std::string>& postfix);
 };

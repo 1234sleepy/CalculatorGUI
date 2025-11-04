@@ -10,7 +10,7 @@
 #include <sstream>
 
 
-double TrigCalculator::evaluateExpression(const char expression[256])
+TrigCalculator::CalcResult TrigCalculator::evaluateExpression(const char expression[256])
 {
 	std::string expr = evaluateAllTrigFunctions(expression);
 

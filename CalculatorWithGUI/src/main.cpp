@@ -33,6 +33,8 @@ static const int APP_NUM_FRAMES_IN_FLIGHT = 2;
 static const int APP_NUM_BACK_BUFFERS = 2;
 static const int APP_SRV_HEAP_SIZE = 64;
 
+void drawSnow();
+
 struct FrameContext
 {
     ID3D12CommandAllocator* CommandAllocator;
@@ -302,7 +304,22 @@ int WINAPI WinMain(
         ImGui::NewFrame();
         
         
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(io.DisplaySize);
+        ImGui::Begin("SnowOverlay", nullptr,
+            ImGuiWindowFlags_NoDecoration |
+            ImGuiWindowFlags_NoInputs |
+            ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoBringToFrontOnFocus);
+        drawSnow();
+
+
         CalculatorUI::renderCalculatorUI(currentUI);
+
+        
+
+
+        ImGui::End();
         
 
         ImGui::Render();
@@ -589,3 +606,84 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
 }
+
+struct snowFlakesStruct
+{
+    ImVec2 snowFlake = ImVec2(0.0f, 0.0f);
+    float speed = 0.0f;
+    float windOffset = 0.0f;
+    float windDrift = 0.0f;
+    float size = 0.0f;
+    int opacity = 0;
+};
+
+
+void drawSnow()
+{
+    static std::vector<snowFlakesStruct> snowflakes(300);
+
+    static bool initialized = false;
+
+    ImGuiIO& io = ImGui::GetIO();
+    ImDrawList* drawList = ImGui::GetForegroundDrawList();
+
+    if (!initialized) 
+    {
+        for (int i = 0; i < snowflakes.size(); ++i)
+        {
+            snowflakes[i].snowFlake = ImVec2(rand() % (static_cast<int>(io.DisplaySize.x)), rand() % static_cast<int>(io.DisplaySize.y));
+            snowflakes[i].speed = 30 + rand() % 100;
+            snowflakes[i].windOffset = rand() % 100 / 50.0f;
+            snowflakes[i].windDrift = ((rand() % 20) - 10) / 200.0f;
+            snowflakes[i].opacity = 100 + rand() % 75;
+            snowflakes[i].size = 1.5f + (rand() % 100) / 100.0f;
+        }
+        initialized = true;
+    }
+
+    float deltaTime = io.DeltaTime;
+
+    static float time = 0.0f;
+    static float gustTimer = 0.0f;
+    static float currentGust = 0.0f;
+    static float targetGust = 0.0f;
+
+    time += time + deltaTime < 1000.0f ? deltaTime : 0.0f;
+    gustTimer += deltaTime;
+
+    if (gustTimer > 3.0f + (rand() % 400) / 100.0f)
+    {
+        gustTimer = 0.0f;
+        targetGust = ((rand() % 200) - 100) * 0.5f;
+    }
+
+    currentGust += (targetGust - currentGust) * 0.5f * deltaTime;
+
+    for (int i = 0; i < snowflakes.size(); ++i)
+    {
+        float sway = sinf(time * 1.2f + snowflakes[i].windOffset) * 30.0f;
+        float drift = snowflakes[i].windDrift * 20.0f;
+        float wind = sway + drift + currentGust;
+
+        snowflakes[i].snowFlake.y += snowflakes[i].speed * deltaTime;
+        snowflakes[i].snowFlake.x += wind * deltaTime;
+
+        if (snowflakes[i].snowFlake.y > io.DisplaySize.y)
+        {
+            snowflakes[i].snowFlake.y = 0;
+            snowflakes[i].snowFlake.x = rand() % (static_cast<int>(io.DisplaySize.x));
+        }
+
+        if (snowflakes[i].snowFlake.x < 0)
+        {
+            snowflakes[i].snowFlake.x = io.DisplaySize.x;
+        }
+        if (snowflakes[i].snowFlake.x > io.DisplaySize.x)
+        {
+            snowflakes[i].snowFlake.x = 0;
+        }
+
+        drawList->AddCircleFilled(snowflakes[i].snowFlake, snowflakes[i].size, IM_COL32(255, 255, 255, snowflakes[i].opacity));
+    }
+}
+

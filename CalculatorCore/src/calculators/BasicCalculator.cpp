@@ -164,6 +164,11 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
                 {
                     return { NAN, false, "Division on 0" };
                 }
+                
+                if (std::isinf(result))
+                {
+                    return { result, false, "Infinity" };
+                }
 
                 values.push(result);
             }

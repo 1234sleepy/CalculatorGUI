@@ -32,6 +32,8 @@ public:
 	{
 		std::string name;
 		std::string value;
+		bool isSameLine;
+		ImVec2 btnSize;
 		calculatorTypes uprovedTypes[3];
 
 		bool isUpproper(calculatorTypes renderType)
@@ -48,35 +50,40 @@ public:
 		}
 	};
 
-	static const std::array<functBtn, 17> buttonNames;
+	static const std::array<functBtn, 19> kButtonNames;
 
-	static const int programWidth;
-	static const int programHeight;
+	static const int kProgramWidth;
+	static const int kProgramHeight;
 
 	static int countOfExportFiles;
 
 	static bool isErrorHandlering;
 	static std::string errorMsg;
 
-
 	static char expression[256];
 	static char prevExpression[256];
 
-	static const ImGuiWindowFlags imGuiWindowFlags;
+	static const ImGuiWindowFlags kImGuiWindowFlags;
 
 	static bool isImportingFile;
 
-	static const ImVec2 standardCalculatorBtnSize;
-	static const ImVec2 standardCalculatorUISize;
-	static const ImVec2 standardCalculatorUIWindowSize;
+	static const ImVec2 kStandardCalculatorBtnSize;
+	static const ImVec2 kStandardCalculatorUISize;
+	static const ImVec2 kStandardCalculatorUIWindowSize;
 
-	static const double standardCalculatorInputTextWithHintSize;
+	static const double kStandardCalculatorInputTextWithHintSize;
 
 
 	static void renderCalculatorUI(calculatorTypes& currentUI);
 	static void renderBasicCalculator();
 	static void renderQuadraticCalculator();
 	static void renderTrigCalculator();
+
+	static void saveHistory(History::historySave history);
+
+	static void changePrevExpression();
+
+	static void clearExpressionVariables();
 
 	static void renderFuncExprButtons(CalculatorUI::calculatorTypes& currentUI);
 

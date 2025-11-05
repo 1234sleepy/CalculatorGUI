@@ -7,7 +7,6 @@
 
 #include <regex>
 #include <string>
-#include <sstream>
 
 
 TrigCalculator::CalcResult TrigCalculator::evaluateExpression(const char expression[256])
@@ -24,7 +23,7 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
 {
     std::string result = expression;
 
-    std::regex trigPattern(R"(\b(sin|cos|tan|asin|acos|atan)\s*\(([^()]*)\))", std::regex::icase);
+    std::regex trigPattern(R"(\b(sin|cos|tan|csc|sec|cot|acot|asin|acos|atan|)\s*\(([^()]*)\))", std::regex::icase);
 
     std::vector<std::smatch> matches
     {
@@ -39,14 +38,16 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
 
         double val = 0.0;
 
-
-
         if (tr.argument == "P")
+        {
             val = std::round(M_PI * 1000000.0) / 1000000.0;
+        }
         else
+        {
             val = std::stod(tr.argument);
+        }
 
-        double radians = val * M_PI / 180.0;
+        double radians = val;
         double value = 0.0;
 
         if (tr.fucnction == "sin")
@@ -61,9 +62,17 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
         {
             value = std::tan(radians);
         }
+        else if (tr.fucnction == "csc")
+        {
+            value = 1.0 / std::sin(radians);
+        }
+        else if (tr.fucnction == "sec")
+        {
+            value = 1.0 / std::cos(radians);
+        }
         else if (tr.fucnction == "cot")
         {
-            value = value = 1.0 / std::tan(radians);
+            value  = 1.0 / std::tan(radians);
         }
         else if (val >= -1.0 && val <= 1.0)
         {
@@ -84,8 +93,6 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
                 value = std::atan(1.0 / val);
             }
         }
-
-        
 
         result.replace(match.position(), match.length(), std::to_string(value));
     }

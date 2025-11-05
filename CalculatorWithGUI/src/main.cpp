@@ -140,7 +140,7 @@ int WINAPI WinMain(
         _T("Calculator"),
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        CalculatorUI::programWidth, CalculatorUI::programHeight,
+        CalculatorUI::kProgramWidth, CalculatorUI::kProgramHeight,
         NULL, NULL, wc.hInstance, NULL);
 
 

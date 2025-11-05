@@ -92,6 +92,4 @@ public:
 	static void trigCalcEvaluation(TrigCalculator::CalcResult& result);
 
 	static void errorHandler(bool status, std::string msg);
-
-
 };

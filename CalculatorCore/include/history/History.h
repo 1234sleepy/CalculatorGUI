@@ -17,5 +17,5 @@ public:
 	static void addHistory(historySave expression);
 	static std::stack<historySave> getHistory();
 private:
-	static std::stack<historySave> history;
+	static std::stack<historySave> _history;
 };

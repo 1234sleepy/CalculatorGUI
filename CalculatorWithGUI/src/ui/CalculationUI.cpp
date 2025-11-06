@@ -11,7 +11,6 @@
 
 
 const ImGuiWindowFlags CalculatorUI::kImGuiWindowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar;
-
 const std::array<CalculatorUI::functBtn, 19> CalculatorUI::kButtonNames =
 {
     CalculatorUI::functBtn("x^2", "^2", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
@@ -22,7 +21,7 @@ const std::array<CalculatorUI::functBtn, 19> CalculatorUI::kButtonNames =
     CalculatorUI::functBtn("*", "*", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("/", "/", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("e", "e",  true, {65,55},{CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("Pi", "P", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("π", "P", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("sin", "sin()", false, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("cos", "cos()", true, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("tan", "tan()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
@@ -39,12 +38,12 @@ bool CalculatorUI::isErrorHandlering = false;
 std::string CalculatorUI::errorMsg = "";
 
 const int CalculatorUI::kProgramWidth = 700;
-const int CalculatorUI::kProgramHeight = 600;
+const int CalculatorUI::kProgramHeight = 610;
 
 int CalculatorUI::countOfExportFiles = 1;
 
-const ImVec2 CalculatorUI::kStandardCalculatorBtnSize = ImVec2(470, 20);
-const ImVec2 CalculatorUI::kStandardCalculatorUISize = ImVec2(180, 20);
+const ImVec2 CalculatorUI::kStandardCalculatorBtnSize = ImVec2(470, 30);
+const ImVec2 CalculatorUI::kStandardCalculatorUISize = ImVec2(180, 30);
 const ImVec2 CalculatorUI::kStandardCalculatorUIWindowSize = ImVec2(700, 200);
 
 const double CalculatorUI::kStandardCalculatorInputTextWithHintSize = 470.0;
@@ -74,7 +73,6 @@ void CalculatorUI::clearExpressionVariables()
     memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
     memset(CalculatorUI::CalculatorUI::prevExpression, 0, sizeof(CalculatorUI::CalculatorUI::prevExpression));
 }
-
 
 void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, CalculatorUI::calculatorTypes type)
 {

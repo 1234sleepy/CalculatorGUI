@@ -131,9 +131,6 @@ int WINAPI WinMain(
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Calculator", nullptr };
     ::RegisterClassExW(&wc);
 
-
-
-    
     HWND hwnd = ::CreateWindowEx(
         WS_EX_LAYERED,
         _T("Calculator"),
@@ -258,7 +255,13 @@ int WINAPI WinMain(
     // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
     //style.FontSizeBase = 20.0f;
     //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf");
+    ImFont* unicodeFont = io.Fonts->AddFontFromFileTTF(
+        "C:\\Windows\\Fonts\\arial.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesGreek()
+    );
+    IM_ASSERT(unicodeFont != nullptr);
+
+    ImGui_ImplDX12_InvalidateDeviceObjects();
+    ImGui_ImplDX12_CreateDeviceObjects();
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf");
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf");
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf");
@@ -298,6 +301,7 @@ int WINAPI WinMain(
         }
         g_SwapChainOccluded = false;
 
+        //Start
 
         ImGui_ImplDX12_NewFrame();
         ImGui_ImplWin32_NewFrame();
@@ -316,13 +320,11 @@ int WINAPI WinMain(
 
         CalculatorUI::renderCalculatorUI(currentUI);
 
-        
-
-
         ImGui::End();
         
-
         ImGui::Render();
+
+        //End
 
         FrameContext* frameCtx = WaitForNextFrameContext();
         UINT backBufferIdx = g_pSwapChain->GetCurrentBackBufferIndex();

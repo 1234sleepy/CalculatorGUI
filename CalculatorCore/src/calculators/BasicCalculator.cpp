@@ -160,13 +160,21 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
             {
                 double result = it->second(a, b);
 
-                if (std::isnan(result) && b == 0)
+                if (std::isnan(result))
                 {
-                    return { NAN, false, "Division on 0" };
+                    if (b == 0)
+                    {
+                        return { result, false, "Division on 0" };
+                    }
+                    return { result, false, "NAN" };
                 }
                 
                 if (std::isinf(result))
                 {
+                    if (b == 0)
+                    {
+                        return { result, false, "Division on 0" };
+                    }
                     return { result, false, "Infinity" };
                 }
 

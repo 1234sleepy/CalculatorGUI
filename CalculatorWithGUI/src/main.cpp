@@ -632,7 +632,7 @@ void drawSnow()
         for (int i = 0; i < snowflakes.size(); ++i)
         {
             snowflakes[i].snowFlake = ImVec2(rand() % (static_cast<int>(io.DisplaySize.x)), rand() % static_cast<int>(io.DisplaySize.y));
-            snowflakes[i].speed = 30 + rand() % 100;
+            snowflakes[i].speed =  10 + rand() % 100;
             snowflakes[i].windOffset = rand() % 100 / 50.0f;
             snowflakes[i].windDrift = ((rand() % 20) - 10) / 200.0f;
             snowflakes[i].opacity = 100 + rand() % 75;

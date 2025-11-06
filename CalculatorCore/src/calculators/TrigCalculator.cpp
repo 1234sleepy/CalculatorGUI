@@ -47,32 +47,31 @@ std::string TrigCalculator::evaluateAllTrigFunctions(const char expression[256])
             val = std::stod(tr.argument);
         }
 
-        double radians = val;
         double value = 0.0;
 
         if (tr.fucnction == "sin")
         {
-            value = std::sin(radians);
+            value = std::sin(val);
         }
         else if (tr.fucnction == "cos")
         {
-            value = std::cos(radians);
+            value = std::cos(val);
         }
         else if (tr.fucnction == "tan")
         {
-            value = std::tan(radians);
+            value = std::tan(val);
         }
         else if (tr.fucnction == "csc")
         {
-            value = 1.0 / std::sin(radians);
+            value = 1.0 / std::sin(val);
         }
         else if (tr.fucnction == "sec")
         {
-            value = 1.0 / std::cos(radians);
+            value = 1.0 / std::cos(val);
         }
         else if (tr.fucnction == "cot")
         {
-            value  = 1.0 / std::tan(radians);
+            value  = 1.0 / std::tan(val);
         }
         else if (val >= -1.0 && val <= 1.0)
         {

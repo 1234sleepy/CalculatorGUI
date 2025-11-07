@@ -36,6 +36,7 @@ public:
     static operatorPrecedence getOperatorPrecedence(char op);
 	static bool isOperator(char c);
 
+
     static std::vector<std::string> convertInfixToPostfix(std::string expression);
     static CalcResult evaluatePostfixExpression(const std::vector<std::string>& postfix);
 

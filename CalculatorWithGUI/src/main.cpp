@@ -128,13 +128,37 @@ int WINAPI WinMain(
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
 
     // Create application window
-    WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Calculator", nullptr };
+    HICON icon = static_cast<HICON>(LoadImageW(
+        nullptr,
+        L"icons/ico2.ico",
+        IMAGE_ICON,
+        119,
+        128,
+        LR_LOADFROMFILE | LR_DEFAULTSIZE
+    ));
+
+    WNDCLASSEXW wc = {
+        sizeof(wc),
+        CS_CLASSDC,
+        WndProc,
+        0L, 0L,
+        GetModuleHandle(nullptr),
+        icon,                        // <-- Large icon (important)
+        LoadCursor(nullptr, IDC_ARROW),
+        nullptr,
+        nullptr,
+        L"Calculator | Made by 1234Sleepy",
+        icon                         // <-- Small icon (optional, but good to set)
+    };
+
     ::RegisterClassExW(&wc);
+
+
 
     HWND hwnd = ::CreateWindowEx(
         WS_EX_LAYERED,
-        _T("Calculator"),
-        _T("Calculator"),
+        _T("Calculator | Made by 1234Sleepy"),
+        _T("Calculator | Made by 1234Sleepy"),
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
         CalculatorUI::kProgramWidth, CalculatorUI::kProgramHeight,

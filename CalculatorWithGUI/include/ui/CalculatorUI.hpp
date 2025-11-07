@@ -9,19 +9,19 @@
 #include "../../vendor/imguI/imgui.h"
 
 
-#include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
-#include "../../../CalculatorCore/include/calculators/QuadraticCalculator.h"
-#include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
-#include "../../../CalculatorCore/include/history/History.h"
+#include "../../../CalculatorCore/include/calculators/BasicCalculator.hpp"
+#include "../../../CalculatorCore/include/calculators/QuadraticCalculator.hpp"
+#include "../../../CalculatorCore/include/calculators/TrigCalculator.hpp"
+#include "../../../CalculatorCore/include/history/History.hpp"
 
-#include "../../include/detection/detectionOfType.h"
+#include "../../include/detection/detectionOfType.hpp"
 
 #include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
 
 #include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
 
 
-#include "../../include/filters/InputFilter.h"
+#include "../../include/filters/InputFilter.hpp"
 
 
 class CalculatorUI
@@ -81,7 +81,6 @@ public:
 	static const ImVec2 kStandardCalculatorUIWindowSize;
 
 	static const double kStandardCalculatorInputTextWithHintSize;
-
 
 	static void renderCalculatorUI(calculatorTypes& currentUI);
 	static void renderBasicCalculator();

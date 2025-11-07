@@ -1,26 +1,20 @@
 #include "pch.h"
 #define _USE_MATH_DEFINES
 
-#include <cmath>
-#include <iostream>
-#include <stack>
-#include <vector>
-#include <string>
-#include <cctype>
-#include <unordered_map>
-#include <algorithm>
-#include <functional>
-
 #include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
-
-#include "../../include/calculators/QuadraticCalculator.h"
+#include "../../include/calculators/QuadraticCalculator.hpp"
 
 double QuadraticCalculator::evalSimpleExpr(std::string expression)
 {
-    std::vector<std::string> postfix = convertInfixToPostfix(expression);
-    std::stack<double> values;
+    std::vector<std::string> postfix
+    {
+        convertInfixToPostfix(expression)
+    };
 
-    static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
+    std::stack<double> values{};
+
+    static const std::unordered_map<std::string, std::function<double(double, double)>> ops
+    {
         {"+", [](double a, double b) { return a + b; }},
         {"-", [](double a, double b) { return a - b; }},
         {"*", [](double a, double b) { return a * b; }},
@@ -45,20 +39,20 @@ double QuadraticCalculator::evalSimpleExpr(std::string expression)
         }
         else
         {
-            auto it = ops.find(token);
+            auto it{ ops.find(token) };
             if (it != ops.end())
             {
                 if (token == "S")
                 {
-                    double a = values.top();
+                    double a{ values.top() };
                     values.pop();
                     values.push(it->second(a, 0.0));
                 }
                 else
                 {
-                    double b = values.top();
+                    double b{ values.top() };
                     values.pop();
-                    double a = values.top();
+                    double a{ values.top() };
                     values.pop();
                     values.push(it->second(a, b));
                 }
@@ -71,9 +65,9 @@ double QuadraticCalculator::evalSimpleExpr(std::string expression)
 
 std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string expression)
 {
-    std::vector<std::string> output;
-    std::stack<char> ops;
-    std::string num;
+    std::vector<std::string> output{};
+    std::stack<char> ops{};
+    std::string num{ "" };
 
     auto pushNumber = [&]()
         {
@@ -86,7 +80,7 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string 
 
     for (size_t i = 0; i < expression.size(); ++i)
     {
-        char c = expression[i];
+        char c{ expression[i] };
         if (isspace(c))
         {
             continue;
@@ -161,7 +155,7 @@ QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues va
     }
     else
     {
-        double discriminant = val.b * val.b - 4 * val.a * val.c;
+        double discriminant{ val.b * val.b - 4 * val.a * val.c };
         if (discriminant >= 0)
         {
             r.firstRoot = std::to_string((-val.b + std::sqrt(discriminant)) / (2 * val.a));
@@ -170,8 +164,8 @@ QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues va
         }
         else
         {
-            double realPart = -val.b / (2 * val.a);
-            double imaginaryPart = std::sqrt(-discriminant) / (2 * val.a);
+            double realPart{ -val.b / (2 * val.a) };
+            double imaginaryPart{ std::sqrt(-discriminant) / (2 * val.a) };
             r.firstRoot = std::to_string(realPart) + " + " + std::to_string(imaginaryPart);
             r.secondRoot = std::to_string(realPart) + " - " + std::to_string(imaginaryPart);
             r.isImaginary = true;
@@ -186,7 +180,7 @@ QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues va
 
 QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string expression)
 {
-    std::string s(expression);
+    std::string s{ expression };
     s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
 
     for (size_t i = 0; i < s.size(); ++i)
@@ -198,9 +192,11 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string exp
         }
     }
 
-    double a = 0, b = 0, c = 0;
-    std::string term;
-    char sign = '+';
+    double a{ 0 };
+    double b{ 0 };
+    double c{ 0 };
+    std::string term{};
+    char sign{ '+' };
 
     for (size_t i = 0; i < s.size();)
     {
@@ -212,7 +208,7 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string exp
         }
         else
         {
-            size_t start = i;
+            size_t start = { i };
             while (i < s.size() && s[i] != '+' && s[i] != '-')
             {
                 ++i;
@@ -226,14 +222,14 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string exp
             }
             else
             {
-                size_t x2Pos = term.find("x^2");
-                size_t xPos = term.find('x');
+                size_t x2Pos{ term.find("x^2") };
+                size_t xPos{ term.find('x') };
 
-                bool isX2 = x2Pos != std::string::npos;
-                bool isX = !isX2 && xPos != std::string::npos;
+                bool isX2{ x2Pos != std::string::npos };
+                bool isX{ !isX2 && xPos != std::string::npos };
 
-                std::string coefStr = (xPos != std::string::npos) ? term.substr(0, xPos) : term;
-                double coef = evalSimpleExpr(coefStr.empty() ? "1" : coefStr);
+                std::string coefStr{ (xPos != std::string::npos) ? term.substr(0, xPos) : term };
+                double coef{ evalSimpleExpr(coefStr.empty() ? "1" : coefStr) };
 
                 if (sign == '-')
                 {
@@ -279,7 +275,7 @@ QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(std::str
         return QuadraticCalculator::CalcResult{ {"NAN","NAN",false}, false, "This is not quadratic expression" };
     }
 
-    auto values = evaluateQuadraticExpression(expression);
+    auto values{ evaluateQuadraticExpression(expression) };
 
     return getRoots(values);
     

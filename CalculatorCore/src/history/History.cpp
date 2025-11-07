@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include "../../include/history/History.h"
+#include "../../include/history/History.hpp"
 
 std::stack<History::historySave> History::_history;
 
-int History::historyCount = 1;
+int History::historyCount{ 1 };
 
 void History::addHistory(History::historySave expression) 
 {

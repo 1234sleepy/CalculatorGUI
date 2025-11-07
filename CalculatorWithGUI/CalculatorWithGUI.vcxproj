@@ -151,9 +151,9 @@
   <ItemGroup>
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.h" />
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialogConfig.h" />
-    <ClInclude Include="include\detection\detectionOfType.h" />
-    <ClInclude Include="include\filters\InputFilter.h" />
-    <ClInclude Include="include\ui\CalculatorUI.h" />
+    <ClInclude Include="include\detection\detectionOfType.hpp" />
+    <ClInclude Include="include\filters\InputFilter.hpp" />
+    <ClInclude Include="include\ui\CalculatorUI.hpp" />
     <ClInclude Include="vendor\imguI\backends\imgui_impl_dx12.h" />
     <ClInclude Include="vendor\imguI\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\imguI\imconfig.h" />

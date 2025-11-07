@@ -1,13 +1,13 @@
 #include "pch.h"
 
 
-#include "../../include/calculators/TrigCalculator.h"
+#include "../../include/calculators/TrigCalculator.hpp"
 
 TrigCalculator::CalcResult TrigCalculator::evaluateExpression(std::string expression)
 {
-	std::string expr = evaluateAllTrigFunctions(expression);
+    std::string expr{ evaluateAllTrigFunctions(expression) };
 
-	std::vector<std::string> postfix = BasicCalculator::convertInfixToPostfix(expr);
+    std::vector<std::string> postfix{ BasicCalculator::convertInfixToPostfix(expr) };
 
 	return BasicCalculator::evaluatePostfixExpression(postfix);
 }
@@ -15,7 +15,7 @@ TrigCalculator::CalcResult TrigCalculator::evaluateExpression(std::string expres
 
 std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
 {
-    std::string result = expression;
+    std::string result{ expression };
 
     std::regex trigPattern(R"(\b(sin|cos|tan|csc|sec|cot|acot|asin|acos|atan|)\s*\(([^()]*)\))", std::regex::icase);
 
@@ -27,10 +27,10 @@ std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
 
     for (auto it = matches.rbegin(); it != matches.rend(); ++it)
     {
-        std::smatch match = *it;
-        TrigCalculator::trigMatch tr = { match[1], match[2] };
+        std::smatch match{ *it };
+        TrigCalculator::trigMatch tr{ match[1], match[2] };
 
-        double val = 0.0;
+        double val{ 0.0 };
 
         if (tr.argument == "P")
         {
@@ -41,7 +41,7 @@ std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
             val = std::stod(tr.argument);
         }
 
-        double value = 0.0;
+        double value{ 0.0 };
 
         if (tr.fucnction == "sin")
         {

@@ -1,10 +1,10 @@
-﻿#include "../../include/ui/CalculatorUI.h"
+﻿#include "../../include/ui/CalculatorUI.hpp"
 
-const ImVec2 CalculatorUI::kFuncButtonSize = { 59,55 };
+const ImVec2 CalculatorUI::kFuncButtonSize{ 59,55 };
 
 
-const ImGuiWindowFlags CalculatorUI::kImGuiWindowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar;
-const std::array<CalculatorUI::functBtn, 20> CalculatorUI::kButtonNames =
+const ImGuiWindowFlags CalculatorUI::kImGuiWindowFlags{ ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar };
+const std::array<CalculatorUI::functBtn, 20> CalculatorUI::kButtonNames
 {
     CalculatorUI::functBtn("x^2", "^2", true,CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("x^3", "^3", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
@@ -28,24 +28,24 @@ const std::array<CalculatorUI::functBtn, 20> CalculatorUI::kButtonNames =
     CalculatorUI::functBtn("acot", "acot(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
 };
 
-bool CalculatorUI::isErrorHandlering = false;
-std::string CalculatorUI::errorMsg = "";
+bool CalculatorUI::isErrorHandlering{ false };
+std::string CalculatorUI::errorMsg{ "" };
 
-const int CalculatorUI::kProgramWidth = 700;
-const int CalculatorUI::kProgramHeight = 610;
+const int CalculatorUI::kProgramWidth{ 700 };
+const int CalculatorUI::kProgramHeight{ 610 };
 
-int CalculatorUI::countOfExportFiles = 1;
+int CalculatorUI::countOfExportFiles{ 1 };
 
-const ImVec2 CalculatorUI::kStandardCalculatorBtnSize = ImVec2(470, 30);
-const ImVec2 CalculatorUI::kStandardCalculatorUISize = ImVec2(180, 30);
-const ImVec2 CalculatorUI::kStandardCalculatorUIWindowSize = ImVec2(700, 200);
+const ImVec2 CalculatorUI::kStandardCalculatorBtnSize{ ImVec2(470, 30) };
+const ImVec2 CalculatorUI::kStandardCalculatorUISize{ ImVec2(180, 30) };
+const ImVec2 CalculatorUI::kStandardCalculatorUIWindowSize{ ImVec2(700, 200) };
 
-const double CalculatorUI::kStandardCalculatorInputTextWithHintSize = 470.0;
+const double CalculatorUI::kStandardCalculatorInputTextWithHintSize{ 470.0 };
 
-std::string CalculatorUI::expression = "";
-std::string CalculatorUI::prevExpression = "empty";
+std::string CalculatorUI::expression{ "" };
+std::string CalculatorUI::prevExpression{ "empty" };
 
-bool CalculatorUI::isImportingFile = false;
+bool CalculatorUI::isImportingFile{ false };
 
 void CalculatorUI::saveHistory(History::historySave history)
 {
@@ -75,7 +75,7 @@ void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, Calculat
 
 void CalculatorUI::basicCalcEvaluation(BasicCalculator::CalcResult& result)
 {
-    std::string s = CalculatorUI::replaceLetters(CalculatorUI::expression);
+    std::string s{ CalculatorUI::replaceLetters(CalculatorUI::expression) };
     result = BasicCalculator::evaluateExpression(CalculatorUI::replaceLetters(CalculatorUI::expression));
 
     CalculatorUI::errorHandler(result.success, result.errorMsg);
@@ -140,7 +140,7 @@ void CalculatorUI::importExpressions(std::filesystem::path filePathName, Calcula
 
 void CalculatorUI::exportExpressions()
 {
-    std::filesystem::path path = "export\\expressions" + std::to_string( CalculatorUI::countOfExportFiles) + ".txt";
+    std::filesystem::path path{ "export\\expressions" + std::to_string(CalculatorUI::countOfExportFiles) + ".txt" };
     
     CalculatorUI::countOfExportFiles++;
 
@@ -155,7 +155,7 @@ void CalculatorUI::exportExpressions()
         auto hist = History::getHistory();
         while (!hist.empty())
         {
-            auto element = hist.top();
+            auto element{ hist.top() };
             outputFile << element.exprRes << "\n";
             hist.pop();
         }
@@ -197,8 +197,7 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 
         if (ImGui::Button("Input"))
         {
-            IGFD::FileDialogConfig config;
-            config.path = ".";
+            IGFD::FileDialogConfig config{"."};
             ImGuiFileDialog::Instance()->OpenDialog("Input", "Choose File", ".txt", config);
         }
 
@@ -211,7 +210,7 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 
         if (ImGuiFileDialog::Instance()->Display("Input")) {
             if (ImGuiFileDialog::Instance()->IsOk()) {
-                std::filesystem::path filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::filesystem::path filePathName{ ImGuiFileDialog::Instance()->GetFilePathName() };
 
                 importExpressions(filePathName, currentUI);
 
@@ -226,7 +225,6 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
             {
                 CalculatorUI::changeCalc(currentUI, CalculatorUI::calculatorTypes::BasicCalc);
             }
-
         }
         if (ImGui::Button("Quadratic", kStandardCalculatorUISize) || currentUI == CalculatorUI::calculatorTypes::QuadraticCalc)
         {
@@ -265,11 +263,11 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
             ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoCollapse))
         {
-            auto hist = History::getHistory();
+            auto hist{ History::getHistory() };
     
             while (!hist.empty())
             {
-                auto element = hist.top();
+                auto element{ hist.top() };
     
                 if (ImGui::Button(element.exprRes.c_str(), ImVec2(450,30)))
                 {
@@ -288,7 +286,7 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
 
 void CalculatorUI::renderBasicCalculator()
 {
-    static BasicCalculator::CalcResult result = {};
+    static BasicCalculator::CalcResult result{};
 
     ImGui::SetNextWindowSize(CalculatorUI::kStandardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -324,7 +322,7 @@ void CalculatorUI::renderBasicCalculator()
 
 void CalculatorUI::renderQuadraticCalculator()
 {
-    static QuadraticCalculator::CalcResult result = {};
+    static QuadraticCalculator::CalcResult result{};
 
     ImGui::SetNextWindowSize(CalculatorUI::kStandardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -361,7 +359,7 @@ void CalculatorUI::renderQuadraticCalculator()
 
 void CalculatorUI::renderTrigCalculator()
 {
-    static TrigCalculator::CalcResult result = {};
+    static TrigCalculator::CalcResult result{};
 
     ImGui::SetNextWindowSize(CalculatorUI::kStandardCalculatorUIWindowSize);
     ImGui::SetNextWindowPos(ImVec2(200, 0), ImGuiCond_Once);
@@ -430,7 +428,7 @@ void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentU
             }
             else
             {
-                ImVec4 buttonColor = ImVec4(0.255f, 0.18f, 0.075f, 1.00f);
+                ImVec4 buttonColor{ ImVec4(0.255f, 0.18f, 0.075f, 1.00f) };
                 ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
                 ImGui::BeginDisabled();
                 if (ImGui::Button(btn.name.c_str(), btn.btnSize))
@@ -459,7 +457,7 @@ void CalculatorUI::errorHandler(bool status, std::string msg)
 
 std::string CalculatorUI::replaceLetters(std::string expression)
 {
-    std::string res = "";
+    std::string res{ "" };
 
     for (int i = 0; i < expression.length(); i++)
     {

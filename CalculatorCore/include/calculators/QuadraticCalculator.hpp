@@ -1,12 +1,17 @@
 #pragma once
 
+#include <cmath>
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <string>
+#include <cctype>
+#include <unordered_map>
+#include <algorithm>
+#include <functional>
 
-
-#include "BasicCalculator.h"
-
-
-
-#include "../../include/struct/QuadraticValues.h"
+#include "BasicCalculator.hpp"
+#include "../../include/struct/QuadraticValues.hpp"
 
 class QuadraticCalculator : public BasicCalculator
 {

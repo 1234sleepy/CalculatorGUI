@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-#include "../include/ui/CalculatorUI.h"
+#include "../include/ui/CalculatorUI.hpp"
 
 #ifdef _DEBUG
 #define DX12_ENABLE_DEBUG_LAYER
@@ -276,12 +276,12 @@ int WINAPI WinMain(
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
-    bool done = false;
-    bool bOpened = true;
+    bool bDone{ false };
+    bool bOpened{ true };
 
     CalculatorUI::calculatorTypes currentUI = CalculatorUI::calculatorTypes::BasicCalc;
 
-    while (!done)
+    while (!bDone)
     {
        
         MSG msg;
@@ -290,9 +290,9 @@ int WINAPI WinMain(
             ::TranslateMessage(&msg);
             ::DispatchMessage(&msg);
             if (msg.message == WM_QUIT)
-                done = true;
+                bDone = true;
         }
-        if (done)
+        if (bDone)
             break;
 
 

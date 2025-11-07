@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../../include/struct/QuadraticValues.h"
+#include "../../include/struct/QuadraticValues.hpp"
 
 QuadraticValues QuadraticValues::fromConstant(double val)
 {

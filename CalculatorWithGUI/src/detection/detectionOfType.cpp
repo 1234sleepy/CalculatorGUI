@@ -1,4 +1,4 @@
-#include "../../include/detection/detectionOfType.h"
+#include "../../include/detection/detectionOfType.hpp"
 
 int detectionOfType::detectType(std::string expression)
 {

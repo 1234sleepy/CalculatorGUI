@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-#include "../../include/calculators/BasicCalculator.h"
+#include "../../include/calculators/BasicCalculator.hpp"
 
 bool BasicCalculator::isOperator(char c)
 {
@@ -29,9 +29,9 @@ BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char 
 
 std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expression)
 {
-    std::vector<std::string> output;
-    std::stack<char> ops;
-    std::string num = "";
+    std::vector<std::string> output{};
+    std::stack<char> ops{};
+    std::string num{ "" };
 
     auto pushNumber = [&]()
     {
@@ -120,9 +120,10 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expr
 
 BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std::vector<std::string>& postfix)
 {
-    std::stack<double> values;
+    std::stack<double> values{};
 
-    static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
+    static const std::unordered_map<std::string, std::function<double(double, double)>> ops 
+    {
         {"+", [](double a, double b) { return a + b; }},
         {"-", [](double a, double b) { return a - b; }},
         {"*", [](double a, double b) { return a * b; }},
@@ -157,13 +158,17 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
                 return {NAN, false, "Not correct exprassion"};
             }
 
-            double b = values.top(); values.pop();
-            double a = values.top(); values.pop();
-            auto it = ops.find(token);
+            double b{ values.top() };
+            values.pop();
+
+            double a {values.top()};
+            values.pop();
+
+            auto it{ ops.find(token) };
 
             if (it != ops.end())
             {
-                double result = it->second(a, b);
+                double result{ it->second(a, b) };
 
                 if (std::isnan(result))
                 {
@@ -202,7 +207,7 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
 
 BasicCalculator::CalcResult BasicCalculator::evaluateExpression(std::string expression)
 {
-	std::vector<std::string> postfix = convertInfixToPostfix(expression);
+    std::vector<std::string> postfix{ convertInfixToPostfix(expression) };
 
 	return evaluatePostfixExpression(postfix);
 }

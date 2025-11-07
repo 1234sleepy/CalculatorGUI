@@ -21,19 +21,19 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\calculators\BasicCalculator.h">
+    <ClInclude Include="include\calculators\BasicCalculator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\calculators\QuadraticCalculator.h">
+    <ClInclude Include="include\calculators\QuadraticCalculator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\calculators\TrigCalculator.h">
+    <ClInclude Include="include\calculators\TrigCalculator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\struct\QuadraticValues.h">
+    <ClInclude Include="include\struct\QuadraticValues.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\history\History.h">
+    <ClInclude Include="include\history\History.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

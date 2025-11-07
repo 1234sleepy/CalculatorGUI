@@ -7,8 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "BasicCalculator.h"
 #include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
+
+#include "BasicCalculator.hpp"
 
 class TrigCalculator : public BasicCalculator
 {

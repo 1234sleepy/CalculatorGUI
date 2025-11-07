@@ -141,11 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="include\calculators\BasicCalculator.h" />
-    <ClInclude Include="include\calculators\QuadraticCalculator.h" />
-    <ClInclude Include="include\calculators\TrigCalculator.h" />
-    <ClInclude Include="include\history\History.h" />
-    <ClInclude Include="include\struct\QuadraticValues.h" />
+    <ClInclude Include="include\calculators\BasicCalculator.hpp" />
+    <ClInclude Include="include\calculators\QuadraticCalculator.hpp" />
+    <ClInclude Include="include\calculators\TrigCalculator.hpp" />
+    <ClInclude Include="include\history\History.hpp" />
+    <ClInclude Include="include\struct\QuadraticValues.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

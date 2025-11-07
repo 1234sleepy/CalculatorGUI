@@ -80,13 +80,13 @@
     <ClInclude Include="vendor\imguI\backends\imgui_impl_win32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ui\CalculatorUI.h">
+    <ClInclude Include="include\ui\CalculatorUI.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imguI\misc\cpp\imgui_stdlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\filters\InputFilter.h">
+    <ClInclude Include="include\filters\InputFilter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialog.h">
@@ -95,7 +95,7 @@
     <ClInclude Include="external-library\ImGuiFileDialogLibrary\ImGuiFileDialogConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\detection\detectionOfType.h">
+    <ClInclude Include="include\detection\detectionOfType.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

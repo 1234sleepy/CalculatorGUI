@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -39,7 +39,7 @@ BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char 
 	return BasicCalculator::operatorPrecedence::OtherPrecedence;
 }
 
-std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::string& expr)
+std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expression)
 {
     std::vector<std::string> output;
     std::stack<char> ops;
@@ -54,43 +54,41 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
         }
     };
 
-    for (size_t i = 0; i < expr.size(); ++i) 
+    for (size_t i = 0; i < expression.length(); ++i) 
     {
-        char c = expr[i];
-
-        if (isspace(c))
+        if (isspace(expression[i]))
         {
             continue;
         }
 
-        if (isdigit(c) || c == '.' || c=='P' || c=='e')
+        if (isdigit(expression[i]) || expression[i] == '.' || expression[i] =='π' || expression[i] =='e')
         {
-            if (c == 'P')
+            if (expression[i] == 'π')
             {
                 num += std::to_string(std::round(M_PI * 1000000.0) / 1000000.0);
             }
-            else if (c == 'e')
+            else if (expression[i] == 'e')
             {
                 num += std::to_string(std::round(M_E * 1000000.0) / 1000000.0);
             }
             else 
             {
-                num += c;
+                num += expression[i];
             }
         }
-        else if (c == '-' && (i == 0 || expr[i - 1] == '(' || std::strchr("+-/*^", expr[i - 1])))
+        else if (expression[i] == '-' && (i == 0 || expression[i - 1] == '(' || std::strchr("+-/*^", expression[i - 1])))
         {
-            num += c;
+            num += expression[i];
         }
         else
         {
             pushNumber();
 
-            if (c == '(')
+            if (expression[i] == '(')
             {
-                ops.push(c);
+                ops.push(expression[i]);
             }
-            else if (c == ')')
+            else if (expression[i] == ')')
             {
                 while (!ops.empty() && ops.top() != '(') {
                     output.push_back(std::string(1, ops.top()));
@@ -101,17 +99,17 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(const std::strin
                     ops.pop();
                 }
             }
-            else if (std::strchr("+-*/^", c))
+            else if (std::strchr("+-*/^", expression[i]))
             {
                 while (!ops.empty() && (
-                    (getOperatorPrecedence(ops.top()) > getOperatorPrecedence(c)) ||
-                    (getOperatorPrecedence(ops.top()) == getOperatorPrecedence(c) && c != '^')
+                    (getOperatorPrecedence(ops.top()) > getOperatorPrecedence(expression[i])) ||
+                    (getOperatorPrecedence(ops.top()) == getOperatorPrecedence(expression[i]) && expression[i] != '^')
                     ))
                 {
                     output.push_back(std::string(1, ops.top()));
                     ops.pop();
                 }
-                ops.push(c);
+                ops.push(expression[i]);
             }
         }
     }
@@ -195,11 +193,9 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
 	return { values.top(), true, "" };
 }
 
-BasicCalculator::CalcResult BasicCalculator::evaluateExpression(const char expression[256])
+BasicCalculator::CalcResult BasicCalculator::evaluateExpression(std::string expression)
 {
-	std::string expr = expression;
-
-	std::vector<std::string> postfix = convertInfixToPostfix(expr);
+	std::vector<std::string> postfix = convertInfixToPostfix(expression);
 
 	return evaluatePostfixExpression(postfix);
 }

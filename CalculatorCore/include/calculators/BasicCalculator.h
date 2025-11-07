@@ -23,10 +23,11 @@ public:
 		std::string errorMsg;
 	};
 
-    static CalcResult evaluateExpression(const char expression[256]);
+    static CalcResult evaluateExpression(std::string expression);
     static operatorPrecedence getOperatorPrecedence(char op);
 	static bool isOperator(char c);
 
-    static std::vector<std::string> convertInfixToPostfix(const std::string& expr);
+    static std::vector<std::string> convertInfixToPostfix(std::string expression);
     static CalcResult evaluatePostfixExpression(const std::vector<std::string>& postfix);
+
 };

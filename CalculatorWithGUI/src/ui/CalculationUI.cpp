@@ -21,7 +21,7 @@ const std::array<CalculatorUI::functBtn, 19> CalculatorUI::kButtonNames =
     CalculatorUI::functBtn("*", "*", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("/", "/", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("e", "e",  true, {65,55},{CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("π", "P", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("π", "π", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("sin", "sin()", false, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("cos", "cos()", true, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("tan", "tan()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
@@ -48,8 +48,8 @@ const ImVec2 CalculatorUI::kStandardCalculatorUIWindowSize = ImVec2(700, 200);
 
 const double CalculatorUI::kStandardCalculatorInputTextWithHintSize = 470.0;
 
-char CalculatorUI::expression[256] = "";
-char CalculatorUI::prevExpression[256] = "";
+std::string CalculatorUI::expression = "";
+std::string CalculatorUI::prevExpression = "empty";
 
 
 bool CalculatorUI::isImportingFile = false;
@@ -64,14 +64,14 @@ void CalculatorUI::saveHistory(History::historySave history)
 
 void CalculatorUI::changePrevExpression()
 {
-    memcpy(CalculatorUI::prevExpression, CalculatorUI::expression, sizeof(CalculatorUI::expression));
-    memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
+    CalculatorUI::prevExpression = CalculatorUI::expression;
+    CalculatorUI::expression = "";
 }
 
 void CalculatorUI::clearExpressionVariables()
 {
-    memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
-    memset(CalculatorUI::CalculatorUI::prevExpression, 0, sizeof(CalculatorUI::CalculatorUI::prevExpression));
+    CalculatorUI::expression = "";
+    CalculatorUI::prevExpression = "empty";
 }
 
 void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, CalculatorUI::calculatorTypes type)
@@ -82,7 +82,8 @@ void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, Calculat
 
 void CalculatorUI::basicCalcEvaluation(BasicCalculator::CalcResult& result)
 {
-    result = BasicCalculator::evaluateExpression(CalculatorUI::expression);
+    std::string s = CalculatorUI::replaceLetters(CalculatorUI::expression);
+    result = BasicCalculator::evaluateExpression(CalculatorUI::replaceLetters(CalculatorUI::expression));
 
     CalculatorUI::errorHandler(result.success, result.errorMsg);
 
@@ -92,7 +93,7 @@ void CalculatorUI::basicCalcEvaluation(BasicCalculator::CalcResult& result)
 
 void CalculatorUI::quadraticCalcEvaluation(QuadraticCalculator::CalcResult& result)
 {
-    result = QuadraticCalculator::evaluateExpression(CalculatorUI::expression);
+    result = QuadraticCalculator::evaluateExpression(CalculatorUI::replaceLetters(CalculatorUI::expression));
 
     CalculatorUI::errorHandler(result.success, result.errorMsg);
 
@@ -101,7 +102,7 @@ void CalculatorUI::quadraticCalcEvaluation(QuadraticCalculator::CalcResult& resu
 
 void CalculatorUI::trigCalcEvaluation(TrigCalculator::CalcResult& result)
 {
-    result = TrigCalculator::evaluateExpression(CalculatorUI::expression);
+    result = TrigCalculator::evaluateExpression(CalculatorUI::replaceLetters(CalculatorUI::expression));
 
     CalculatorUI::errorHandler(result.success, result.errorMsg);
 
@@ -121,7 +122,7 @@ void CalculatorUI::importExpressions(std::filesystem::path filePathName, Calcula
         {
             if (!line.empty())
             {
-                strcpy_s(CalculatorUI::expression, sizeof(CalculatorUI::expression), line.c_str());
+                CalculatorUI::expression = line;
                 CalculatorUI::calculatorTypes expressionType = static_cast<CalculatorUI::calculatorTypes>(detectionOfType::detectType(CalculatorUI::expression));
                 
                 switch (expressionType)
@@ -277,10 +278,9 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
             {
                 auto element = hist.top();
     
-                if (ImGui::Button(element.exprRes.c_str(), ImVec2(450,20)))
+                if (ImGui::Button(element.exprRes.c_str(), ImVec2(450,30)))
                 {
-                    memset(CalculatorUI::CalculatorUI::expression, 0, sizeof(CalculatorUI::CalculatorUI::expression));
-                    memcpy(CalculatorUI::expression, element.expr.c_str(), sizeof(element));
+                    CalculatorUI::expression = element.expr;
                 }
     
                 hist.pop();
@@ -313,7 +313,7 @@ void CalculatorUI::renderBasicCalculator()
 
         ImGui::SetNextItemWidth(CalculatorUI::kStandardCalculatorInputTextWithHintSize);
         ImGui::InputTextWithHint("##Expression", "(2+2)*2",
-            CalculatorUI::expression, sizeof(CalculatorUI::expression),
+            &CalculatorUI::expression,
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersCallback);
 
@@ -323,8 +323,8 @@ void CalculatorUI::renderBasicCalculator()
         }
 
         ImGui::SetWindowFontScale(1.5f);
-        ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
-        ImGui::Text("Result: %.6f", result);
+        ImGui::Text("Expression: %s", CalculatorUI::prevExpression.c_str());
+        ImGui::Text("Result: %.6f", result.value);
         ImGui::SetWindowFontScale(1.0f);
     }
     ImGui::End();
@@ -343,14 +343,12 @@ void CalculatorUI::renderQuadraticCalculator()
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Quadratic Calculator");
-        ImGui::SetWindowFontScale(1.5f);
-        ImGui::Text("Only simplified quadratic\nexpression such as\n7x^2-4x^2+23x+12x+1290-120/18");
         ImGui::SetWindowFontScale(1.0f);
         ImGui::Separator();
 
         ImGui::SetNextItemWidth(CalculatorUI::kStandardCalculatorInputTextWithHintSize);
         ImGui::InputTextWithHint("##Expression", "ax^2+bx+c",
-            CalculatorUI::expression, sizeof(CalculatorUI::expression),
+            &CalculatorUI::expression,
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersEcceptXCallback);
 
@@ -360,7 +358,7 @@ void CalculatorUI::renderQuadraticCalculator()
         }
 
         ImGui::SetWindowFontScale(1.5f);
-        ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
+        ImGui::Text("Expression: %s", CalculatorUI::prevExpression.c_str());
         ImGui::Text("Imaginary roots: %s", result.value.isImaginary ? "Yes" : "No");
         ImGui::Text("FirstRoot: %s", result.value.firstRoot.c_str());
         ImGui::Text("SecondRoot: %s", result.value.secondRoot.c_str());
@@ -388,7 +386,7 @@ void CalculatorUI::renderTrigCalculator()
 
         ImGui::SetNextItemWidth(CalculatorUI::kStandardCalculatorInputTextWithHintSize);
         ImGui::InputTextWithHint("##Expression", "sin(30)+cos(P)",
-            CalculatorUI::expression, sizeof(CalculatorUI::expression),
+            &CalculatorUI::expression,
             ImGuiInputTextFlags_CallbackCharFilter,
             NoLettersCallback);
 
@@ -398,7 +396,7 @@ void CalculatorUI::renderTrigCalculator()
         }
 
         ImGui::SetWindowFontScale(1.5f);
-        ImGui::Text("Expression: %s", CalculatorUI::prevExpression);
+        ImGui::Text("Expression: %s", CalculatorUI::prevExpression.c_str());
         ImGui::Text("Result: %.6f", result.value);
         ImGui::SetWindowFontScale(1.0f);
     }
@@ -407,7 +405,7 @@ void CalculatorUI::renderTrigCalculator()
 
 void CalculatorUI::addToExpression(std::string addition)
 {
-    strncat_s(CalculatorUI::expression, sizeof(CalculatorUI::expression), addition.c_str(), _TRUNCATE);
+    CalculatorUI::expression += addition.c_str();
 }
 
 void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentUI)
@@ -464,4 +462,17 @@ void CalculatorUI::errorHandler(bool status, std::string msg)
         CalculatorUI::isErrorHandlering = true;
         CalculatorUI::errorMsg = msg;
     }
+}
+
+
+std::string CalculatorUI::replaceLetters(std::string expression)
+{
+    for (int i = 0; i < expression.length(); i++)
+    {
+        if (expression[i] == 'π')
+        {
+            expression[i] = 'P';
+        }
+    }
+    return expression;
 }

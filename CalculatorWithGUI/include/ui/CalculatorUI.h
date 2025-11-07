@@ -1,8 +1,12 @@
 #pragma once
 #pragma execution_character_set("utf-8")
 
-#include "../../vendor/imguI/imgui.h"
+#include <iostream>
+#include <filesystem>
+#include <fstream>
+#include <array>
 
+#include "../../vendor/imguI/imgui.h"
 
 
 #include "../../../CalculatorCore/include/calculators/BasicCalculator.h"
@@ -13,10 +17,8 @@
 
 #include "../../include/filters/InputFilter.h"
 
-#include <iostream>
-#include <filesystem>
-#include <fstream>
-#include <array>
+
+
 
 class CalculatorUI
 {
@@ -61,8 +63,8 @@ public:
 	static bool isErrorHandlering;
 	static std::string errorMsg;
 
-	static char expression[256];
-	static char prevExpression[256];
+	static std::string expression;
+	static std::string prevExpression;
 
 	static const ImGuiWindowFlags kImGuiWindowFlags;
 
@@ -100,4 +102,6 @@ public:
 	static void trigCalcEvaluation(TrigCalculator::CalcResult& result);
 
 	static void errorHandler(bool status, std::string msg);
+
+	static std::string replaceLetters(std::string expression);
 };

@@ -256,18 +256,18 @@ int WINAPI WinMain(
     //style.FontSizeBase = 20.0f;
     //io.Fonts->AddFontDefault();
     ImFont* unicodeFont = io.Fonts->AddFontFromFileTTF(
-        "C:\\Windows\\Fonts\\arial.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesGreek()
+        "C:\\Windows\\Fonts\\arialuni.ttf", 18.0f
     );
     IM_ASSERT(unicodeFont != nullptr);
 
-    ImGui_ImplDX12_InvalidateDeviceObjects();
-    ImGui_ImplDX12_CreateDeviceObjects();
+
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf");
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf");
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf");
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf");
+    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\arialuni.ttf");
     //IM_ASSERT(font != nullptr);
-
+    //ImGui_ImplDX12_InvalidateDeviceObjects();
+    //ImGui_ImplDX12_CreateDeviceObjects();
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;

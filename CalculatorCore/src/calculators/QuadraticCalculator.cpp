@@ -15,7 +15,7 @@
 
 
 
-double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
+double QuadraticCalculator::evalSimpleExpr(std::string expression)
 {
     std::stack<double> values;
     std::stack<char> ops;
@@ -41,17 +41,17 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
 
     std::string num;
 
-    for (size_t i = 0; i < expr.size(); ++i)
+    for (size_t i = 0; i < expression.size(); ++i)
     {
-        char c = expr[i];
-        if (std::isspace(c))
+        
+        if (std::isspace(expression[i]))
         {
             continue;
         }
 
-        if (std::isdigit(c) || c == '.')
+        if (std::isdigit(expression[i]) || expression[i] == '.')
         {
-            num += c;
+            num += expression[i];
         }
         else
         {
@@ -61,11 +61,11 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
                 num.clear();
             }
 
-            if (c == '(')
+            if (expression[i] == '(')
             {
-                ops.push(c);
+                ops.push(expression[i]);
             }
-            else if (c == ')')
+            else if (expression[i] == ')')
             {
                 while (!ops.empty() && ops.top() != '(')
                 {
@@ -81,9 +81,9 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
                     ops.pop();
                 }
             }
-            else if (static_cast<bool>(BasicCalculator::getOperatorPrecedence(c)))
+            else if (static_cast<bool>(BasicCalculator::getOperatorPrecedence(expression[i])))
             {
-                while (!ops.empty() && BasicCalculator::getOperatorPrecedence(ops.top()) >= BasicCalculator::getOperatorPrecedence(c))
+                while (!ops.empty() && BasicCalculator::getOperatorPrecedence(ops.top()) >= BasicCalculator::getOperatorPrecedence(expression[i]))
                 {
                     double b = values.top(); values.pop();
                     double a = values.top(); values.pop();
@@ -92,7 +92,7 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
 
                     values.push(applyOp(a, b, op));
                 }
-                ops.push(c);
+                ops.push(expression[i]);
             }
         }
     }
@@ -115,7 +115,7 @@ double QuadraticCalculator::evalSimpleExpr(const std::string& expr)
     return values.empty() ? 0.0 : values.top();
 }
 
-std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(const char* expr)
+std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string expression)
 {
     std::vector<std::string> output;
     std::stack<char> ops;
@@ -130,9 +130,9 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(const char* 
             }
         };
 
-    for (size_t i = 0; expr[i] != '\0'; ++i)
+    for (size_t i = 0; expression[i] != '\0'; ++i)
     {
-        char c = expr[i];
+        char c = expression[i];
         if (std::isspace(c))
         {
             continue;
@@ -223,9 +223,9 @@ QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues va
 }
 
 
-QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(const char* expr)
+QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string expression)
 {
-    std::string s(expr);
+    std::string s(expression);
 
     s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
 
@@ -293,10 +293,8 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(const char* exp
     return { a, b, c };
 }
 
-bool QuadraticCalculator::isQuadraticExpression(const char* expr)
+bool QuadraticCalculator::isQuadraticExpression(std::string expression)
 {
-    std::string expression = expr;
-
     bool isX = false;
     bool isPowX = false;
 
@@ -305,7 +303,7 @@ bool QuadraticCalculator::isQuadraticExpression(const char* expr)
         if (expression[i] == 'x')
         {
             isX = true;
-            if (expression[i] + 1 == '^')
+            if (expression[i + 1] == '^')
             {
                 isPowX = true;
             }
@@ -316,7 +314,7 @@ bool QuadraticCalculator::isQuadraticExpression(const char* expr)
 }
 
 
-QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(const char expression[256])
+QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(std::string expression)
 {
     if (!isQuadraticExpression(expression))
     {

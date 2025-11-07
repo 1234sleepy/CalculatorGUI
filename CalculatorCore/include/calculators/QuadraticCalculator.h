@@ -16,8 +16,8 @@ public:
 
 	struct roots
 	{
-		std::string firstRoot;
-		std::string secondRoot;
+		std::string firstRoot = "0.000000";
+		std::string secondRoot = "0.000000";
 		bool isImaginary;
 	};
 
@@ -29,16 +29,16 @@ public:
 		std::string errorMsg;
 	};
 
-    static CalcResult evaluateExpression(const char expression[256]);
+    static CalcResult evaluateExpression(std::string expression);
 private:
 
-    static QuadraticValues evaluateQuadraticExpression(const char* expr);
+    static QuadraticValues evaluateQuadraticExpression(std::string expression);
 
-    static double evalSimpleExpr(const std::string& expr);
+    static double evalSimpleExpr(std::string expression);
 
-    static std::vector<std::string> convertInfixToPostfix(const char* expr);
+    static std::vector<std::string> convertInfixToPostfix(std::string expression);
 
     static CalcResult getRoots(QuadraticValues val);
 
-	static bool isQuadraticExpression(const char* expr);
+	static bool isQuadraticExpression(std::string expression);
 };

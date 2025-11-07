@@ -61,9 +61,9 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expr
             continue;
         }
 
-        if (isdigit(expression[i]) || expression[i] == '.' || expression[i] =='π' || expression[i] =='e')
+        if (isdigit(expression[i]) || expression[i] == '.' || expression[i] =='P' || expression[i] =='e')
         {
-            if (expression[i] == 'π')
+            if (expression[i] == 'P')
             {
                 num += std::to_string(std::round(M_PI * 1000000.0) / 1000000.0);
             }

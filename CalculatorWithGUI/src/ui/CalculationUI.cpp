@@ -21,7 +21,7 @@ const std::array<CalculatorUI::functBtn, 19> CalculatorUI::kButtonNames =
     CalculatorUI::functBtn("*", "*", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("/", "/", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("e", "e",  true, {65,55},{CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("π", "π", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("π","π", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("sin", "sin()", false, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("cos", "cos()", true, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
     CalculatorUI::functBtn("tan", "tan()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
@@ -50,7 +50,6 @@ const double CalculatorUI::kStandardCalculatorInputTextWithHintSize = 470.0;
 
 std::string CalculatorUI::expression = "";
 std::string CalculatorUI::prevExpression = "empty";
-
 
 bool CalculatorUI::isImportingFile = false;
 
@@ -303,7 +302,6 @@ void CalculatorUI::renderBasicCalculator()
     if (ImGui::Begin("Basic Calculator", nullptr,
         CalculatorUI::kImGuiWindowFlags))
     {
-
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("Basic Calculator");
@@ -405,7 +403,7 @@ void CalculatorUI::renderTrigCalculator()
 
 void CalculatorUI::addToExpression(std::string addition)
 {
-    CalculatorUI::expression += addition.c_str();
+    CalculatorUI::expression += addition;
 }
 
 void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentUI)
@@ -467,12 +465,19 @@ void CalculatorUI::errorHandler(bool status, std::string msg)
 
 std::string CalculatorUI::replaceLetters(std::string expression)
 {
+    std::string res = "";
+
     for (int i = 0; i < expression.length(); i++)
     {
-        if (expression[i] == 'π')
+        if (static_cast<unsigned char>(expression[i]) == 207 && static_cast<unsigned char>(expression[i+1]) == 128)
         {
-            expression[i] = 'P';
+            res += 'P';
+            i++;
+        }
+        else
+        {
+            res += expression[i];
         }
     }
-    return expression;
+    return res;
 }

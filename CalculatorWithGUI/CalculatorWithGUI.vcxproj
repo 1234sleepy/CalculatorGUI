@@ -109,6 +109,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)CalculatorCore\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,9 +168,6 @@
     <ProjectReference Include="..\CalculatorCore\CalculatorCore.vcxproj">
       <Project>{f1ef82df-c4fb-4774-90f6-040ed0ddf9aa}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="fonts\NotoSans.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

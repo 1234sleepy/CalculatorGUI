@@ -18,8 +18,6 @@
 #include "../../include/filters/InputFilter.h"
 
 
-
-
 class CalculatorUI
 {
 public:

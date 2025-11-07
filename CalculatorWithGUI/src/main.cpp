@@ -256,10 +256,12 @@ int WINAPI WinMain(
     //style.FontSizeBase = 20.0f;
     //io.Fonts->AddFontDefault();
     ImFont* unicodeFont = io.Fonts->AddFontFromFileTTF(
-        "C:\\Windows\\Fonts\\arialuni.ttf", 18.0f
+        "C:\\Users\\asade\\source\\repos\\1234sleepy\\CalculatorGUI\\CalculatorWithGUI\\fonts\\Gentium-Regular.ttf", 20.0f, nullptr, io.Fonts->GetGlyphRangesGreek()
     );
-    IM_ASSERT(unicodeFont != nullptr);
 
+
+    IM_ASSERT(unicodeFont != nullptr);
+    io.FontDefault = unicodeFont;
 
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf");
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf");

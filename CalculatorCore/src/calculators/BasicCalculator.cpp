@@ -1,14 +1,5 @@
 ﻿#include "pch.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
-#include <iostream>
-#include <stack>
-#include <cctype>
-#include <unordered_map>
-#include <functional>
-
 #include "../../include/calculators/BasicCalculator.h"
 
 bool BasicCalculator::isOperator(char c)

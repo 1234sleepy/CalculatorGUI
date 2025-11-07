@@ -1,14 +1,12 @@
 #pragma once
 
-#include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
 
-#include "../../include/struct/QuadraticValues.h"
 
 #include "BasicCalculator.h"
 
-#include <string>
-#include <iostream>
-#include <vector>
+
+
+#include "../../include/struct/QuadraticValues.h"
 
 class QuadraticCalculator : public BasicCalculator
 {

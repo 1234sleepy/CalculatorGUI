@@ -1,11 +1,14 @@
 #pragma once
 
-#include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
+#define _USE_MATH_DEFINES
+#include <cmath>
 
-#include "BasicCalculator.h"
-
+#include <regex>
 #include <string>
 #include <vector>
+
+#include "BasicCalculator.h"
+#include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
 
 class TrigCalculator : public BasicCalculator
 {

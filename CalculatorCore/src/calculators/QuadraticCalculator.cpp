@@ -1,5 +1,6 @@
 #include "pch.h"
 #define _USE_MATH_DEFINES
+
 #include <cmath>
 #include <iostream>
 #include <stack>
@@ -9,6 +10,9 @@
 #include <unordered_map>
 #include <algorithm>
 #include <functional>
+
+#include "../../../CalculatorWithGUI/vendor/imguI/imgui.h"
+
 #include "../../include/calculators/QuadraticCalculator.h"
 
 double QuadraticCalculator::evalSimpleExpr(std::string expression)
@@ -274,9 +278,9 @@ QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(std::str
     {
         return QuadraticCalculator::CalcResult{ {"NAN","NAN",false}, false, "This is not quadratic expression" };
     }
-    else
-    {
-        auto values = evaluateQuadraticExpression(expression);
-        return getRoots(values);
-    }
+
+    auto values = evaluateQuadraticExpression(expression);
+
+    return getRoots(values);
+    
 }

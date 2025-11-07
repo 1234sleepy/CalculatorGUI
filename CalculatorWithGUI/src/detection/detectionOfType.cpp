@@ -1,7 +1,5 @@
 #include "../../include/detection/detectionOfType.h"
 
-
-
 int detectionOfType::detectType(std::string expression)
 {
 	for (auto letter : expression)
@@ -15,6 +13,8 @@ int detectionOfType::detectType(std::string expression)
 	return (expression.find("sin") != std::string::npos ||
 		expression.find("cos") != std::string::npos ||
 		expression.find("tan") != std::string::npos ||
+		expression.find("csc") != std::string::npos ||
+		expression.find("sec") != std::string::npos ||
 		expression.find("cot") != std::string::npos ||
 		expression.find("asin") != std::string::npos ||
 		expression.find("acos") != std::string::npos ||

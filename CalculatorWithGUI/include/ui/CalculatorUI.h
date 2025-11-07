@@ -14,6 +14,12 @@
 #include "../../../CalculatorCore/include/calculators/TrigCalculator.h"
 #include "../../../CalculatorCore/include/history/History.h"
 
+#include "../../include/detection/detectionOfType.h"
+
+#include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
+
+#include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
+
 
 #include "../../include/filters/InputFilter.h"
 

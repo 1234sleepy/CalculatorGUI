@@ -1,13 +1,7 @@
 #include "pch.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
 
 #include "../../include/calculators/TrigCalculator.h"
-
-#include <regex>
-#include <string>
-
 
 TrigCalculator::CalcResult TrigCalculator::evaluateExpression(std::string expression)
 {

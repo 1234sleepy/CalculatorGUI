@@ -1,11 +1,4 @@
-﻿
-#include "../../include/detection/detectionOfType.h"
-
-#include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
-
-#include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
-
-#include "../../include/ui/CalculatorUI.h"
+﻿#include "../../include/ui/CalculatorUI.h"
 
 const ImVec2 CalculatorUI::kFuncButtonSize = { 59,55 };
 

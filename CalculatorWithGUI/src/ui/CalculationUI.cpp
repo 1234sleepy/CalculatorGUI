@@ -7,31 +7,32 @@
 
 #include "../../include/ui/CalculatorUI.h"
 
-
+const ImVec2 CalculatorUI::kFuncButtonSize = { 59,55 };
 
 
 const ImGuiWindowFlags CalculatorUI::kImGuiWindowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar;
-const std::array<CalculatorUI::functBtn, 19> CalculatorUI::kButtonNames =
+const std::array<CalculatorUI::functBtn, 20> CalculatorUI::kButtonNames =
 {
-    CalculatorUI::functBtn("x^2", "^2", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("x^3", "^3", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("(", "(", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn(")", "^)", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("a^b", "^", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("*", "*", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("/", "/", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("e", "e",  true, {65,55},{CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("π","π", true, {65,55}, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("sin", "sin()", false, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("cos", "cos()", true, {59,55}, {CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("tan", "tan()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("csc", "csc()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-	CalculatorUI::functBtn("sec", "sec()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("cot", "cot()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("asin", "asin()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("acos", "acos()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("atan", "atan()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
-    CalculatorUI::functBtn("acot", "acot()",  true, {59,55},{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("x^2", "^2", true,CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("x^3", "^3", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("(", "(", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn(")", ")", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("a^b", "^", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("*", "*", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("/", "/", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("e", "e",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("π","π", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("√","√(", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::BasicCalc, CalculatorUI::calculatorTypes::QuadraticCalc, CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("sin", "sin(", false, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("cos", "cos(", true, CalculatorUI::kFuncButtonSize, {CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("tan", "tan(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("csc", "csc(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+	CalculatorUI::functBtn("sec", "sec(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("cot", "cot(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("asin", "asin(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("acos", "acos(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("atan", "atan(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
+    CalculatorUI::functBtn("acot", "acot(",  true, CalculatorUI::kFuncButtonSize,{CalculatorUI::calculatorTypes::TrigCalc}),
 };
 
 bool CalculatorUI::isErrorHandlering = false;
@@ -473,6 +474,11 @@ std::string CalculatorUI::replaceLetters(std::string expression)
         {
             res += 'P';
             i++;
+        }
+        else if (static_cast<unsigned char>(expression[i]) == 226 && static_cast<unsigned char>(expression[i + 1]) == 136 && static_cast<unsigned char>(expression[i + 2]) == 154)
+        {
+            res += 'S';
+            i+=2;
         }
         else
         {

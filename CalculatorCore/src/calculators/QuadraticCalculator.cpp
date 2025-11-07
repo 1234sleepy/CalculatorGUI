@@ -1,115 +1,65 @@
 #include "pch.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
-
-#include "../../include/calculators/QuadraticCalculator.h"
-
 #include <iostream>
 #include <stack>
 #include <vector>
 #include <string>
 #include <cctype>
 #include <unordered_map>
-#include <sstream>
 #include <algorithm>
-
-
+#include <functional>
+#include "../../include/calculators/QuadraticCalculator.h"
 
 double QuadraticCalculator::evalSimpleExpr(std::string expression)
 {
+    std::vector<std::string> postfix = convertInfixToPostfix(expression);
     std::stack<double> values;
-    std::stack<char> ops;
 
-    auto applyOp = [&](double a, double b, char op)
-        {
-            switch (op)
-            {
-            case '+': 
-                return a + b;
-            case '-': 
-                return a - b;
-            case '*': 
-                return a * b;
-            case '/': 
-                return (b != 0.0) ? a / b : 0.0;
-            case '^': 
-                return std::pow(a, b);
-            default: 
-                return 0.0;
-            }
-        };
+    static const std::unordered_map<std::string, std::function<double(double, double)>> ops = {
+        {"+", [](double a, double b) { return a + b; }},
+        {"-", [](double a, double b) { return a - b; }},
+        {"*", [](double a, double b) { return a * b; }},
+        {"/", [](double a, double b) { return a / b; }},
+        {"^", [](double a, double b) { return std::pow(a, b); }},
+        {"S", [](double a, double) { return std::sqrt(a); }}
+    };
 
-    std::string num;
-
-    for (size_t i = 0; i < expression.size(); ++i)
+    for (const auto& token : postfix)
     {
-        
-        if (std::isspace(expression[i]))
+        if (token == "P")
         {
-            continue;
+            values.push(std::round(M_PI * 1000000.0) / 1000000.0);
         }
-
-        if (std::isdigit(expression[i]) || expression[i] == '.')
+        else if (token == "e")
         {
-            num += expression[i];
+            values.push(std::round(M_E * 1000000.0) / 1000000.0);
+        }
+        else if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
+        {
+            values.push(std::stod(token));
         }
         else
         {
-            if (!num.empty())
+            auto it = ops.find(token);
+            if (it != ops.end())
             {
-                values.push(std::stod(num));
-                num.clear();
-            }
-
-            if (expression[i] == '(')
-            {
-                ops.push(expression[i]);
-            }
-            else if (expression[i] == ')')
-            {
-                while (!ops.empty() && ops.top() != '(')
+                if (token == "S")
                 {
-                    double b = values.top(); values.pop();
-                    double a = values.top(); values.pop();
-
-                    char op = ops.top(); ops.pop();
-
-                    values.push(applyOp(a, b, op));
+                    double a = values.top();
+                    values.pop();
+                    values.push(it->second(a, 0.0));
                 }
-                if (!ops.empty())
+                else
                 {
-                    ops.pop();
+                    double b = values.top();
+                    values.pop();
+                    double a = values.top();
+                    values.pop();
+                    values.push(it->second(a, b));
                 }
-            }
-            else if (static_cast<bool>(BasicCalculator::getOperatorPrecedence(expression[i])))
-            {
-                while (!ops.empty() && BasicCalculator::getOperatorPrecedence(ops.top()) >= BasicCalculator::getOperatorPrecedence(expression[i]))
-                {
-                    double b = values.top(); values.pop();
-                    double a = values.top(); values.pop();
-
-                    char op = ops.top(); ops.pop();
-
-                    values.push(applyOp(a, b, op));
-                }
-                ops.push(expression[i]);
             }
         }
-    }
-
-    if (!num.empty())
-    {
-        values.push(std::stod(num));
-    }
-
-    while (!ops.empty())
-    {
-        double b = values.top(); values.pop();
-        double a = values.top(); values.pop();
-
-        char op = ops.top(); ops.pop();
-
-        values.push(applyOp(a, b, op));
     }
 
     return values.empty() ? 0.0 : values.top();
@@ -130,15 +80,19 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string 
             }
         };
 
-    for (size_t i = 0; expression[i] != '\0'; ++i)
+    for (size_t i = 0; i < expression.size(); ++i)
     {
         char c = expression[i];
-        if (std::isspace(c))
+        if (isspace(c))
         {
             continue;
         }
 
-        if (std::isdigit(c) || c == '.' || std::isalpha(c))
+        if (c == 'S')
+        {
+            ops.push('S');
+        }
+        else if (isdigit(c) || c == '.' || c == 'P' || c == 'e')
         {
             num += c;
         }
@@ -157,23 +111,31 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string 
             }
             if (!ops.empty())
             {
-            ops.pop();
+                ops.pop();
+            }
+            if (!ops.empty() && ops.top() == 'S')
+            {
+                output.push_back(std::string(1, ops.top()));
+                ops.pop();
             }
         }
-        else if (QuadraticCalculator::isOperator(c))
+        else if (BasicCalculator::isOperator(c))
         {
             pushNumber();
-            while (!ops.empty() && getOperatorPrecedence(ops.top()) >= getOperatorPrecedence(c))
+            while (!ops.empty() && BasicCalculator::getOperatorPrecedence(ops.top()) >= BasicCalculator::getOperatorPrecedence(c))
             {
                 output.push_back(std::string(1, ops.top()));
                 ops.pop();
             }
             ops.push(c);
         }
+        else if (c == '-' && (i == 0 || expression[i - 1] == '(' || BasicCalculator::isOperator(expression[i - 1])))
+        {
+            num += c;
+        }
     }
 
     pushNumber();
-
     while (!ops.empty())
     {
         output.push_back(std::string(1, ops.top()));
@@ -185,35 +147,31 @@ std::vector<std::string> QuadraticCalculator::convertInfixToPostfix(std::string 
 
 QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues val)
 {
-    roots r{ "0", "0", false};
+    roots r{ "0", "0", false };
 
     if (val.a == 0)
     {
         r.firstRoot = r.secondRoot = std::to_string((val.b != 0) ? -val.c / val.b : 0);
-
         r.isImaginary = false;
-
-        return {r, true, ""};
-    }
-
-    double discriminant = val.b * val.b - 4 * val.a * val.c;
-
-    if (discriminant >= 0)
-    {
-        r.firstRoot = std::to_string((-val.b + std::sqrt(discriminant)) / (2 * val.a));
-        r.secondRoot = std::to_string((-val.b - std::sqrt(discriminant)) / (2 * val.a));
-        r.isImaginary = false;
+        return { r, true, "" };
     }
     else
     {
-        double realPart = -val.b / (2 * val.a);
-        double imaginaryPart = std::sqrt(-discriminant) / (2 * val.a);
-
-        r.firstRoot = std::to_string(realPart) + " + " + std::to_string(imaginaryPart);
-        r.secondRoot = std::to_string(realPart) + " - " + std::to_string(imaginaryPart);
-
-        r.isImaginary = true;
-
+        double discriminant = val.b * val.b - 4 * val.a * val.c;
+        if (discriminant >= 0)
+        {
+            r.firstRoot = std::to_string((-val.b + std::sqrt(discriminant)) / (2 * val.a));
+            r.secondRoot = std::to_string((-val.b - std::sqrt(discriminant)) / (2 * val.a));
+            r.isImaginary = false;
+        }
+        else
+        {
+            double realPart = -val.b / (2 * val.a);
+            double imaginaryPart = std::sqrt(-discriminant) / (2 * val.a);
+            r.firstRoot = std::to_string(realPart) + " + " + std::to_string(imaginaryPart);
+            r.secondRoot = std::to_string(realPart) + " - " + std::to_string(imaginaryPart);
+            r.isImaginary = true;
+        }
     }
 
     r.firstRoot = r.firstRoot.substr(0, 255);
@@ -222,16 +180,14 @@ QuadraticCalculator::CalcResult QuadraticCalculator::getRoots(QuadraticValues va
     return { r, true, "" };
 }
 
-
 QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string expression)
 {
     std::string s(expression);
-
     s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
 
     for (size_t i = 0; i < s.size(); ++i)
     {
-        if (s[i] == 'x' && (i == 0 || (!std::isdigit(s[i - 1]) && s[i - 1] != '.')))
+        if (s[i] == 'x' && (i == 0 || (!isdigit(s[i - 1]) && s[i - 1] != '.')))
         {
             s.insert(i, "1");
             i++;
@@ -250,44 +206,51 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string exp
             i++;
             continue;
         }
-
-        size_t start = i;
-        while (i < s.size() && s[i] != '+' && s[i] != '-') ++i;
-        term = s.substr(start, i - start);
-        if (term.empty())
-        {
-            continue;
-        }
-
-        bool isX2 = term.find("x^2") != std::string::npos;
-        bool isX = !isX2 && term.find('x') != std::string::npos;
-
-        size_t xPos = term.find('x');
-        std::string coefStr = (xPos != std::string::npos) ? term.substr(0, xPos) : term;
-
-        double coef = 0.0;
-
-         coef = evalSimpleExpr(coefStr.empty() ? "1" : coefStr);
-
-        if (sign == '-') 
-        {
-            coef *= -1;
-        } 
-
-        if (isX2)
-        {
-            a += coef;
-        }
-        else if (isX)
-        {
-            b += coef;
-        }
         else
         {
-            c += evalSimpleExpr(coefStr) * (sign == '-' ? -1 : 1);
-        }
+            size_t start = i;
+            while (i < s.size() && s[i] != '+' && s[i] != '-')
+            {
+                ++i;
+            }
 
-        sign = '+';
+            term = s.substr(start, i - start);
+
+            if (term.empty())
+            {
+                continue;
+            }
+            else
+            {
+                size_t x2Pos = term.find("x^2");
+                size_t xPos = term.find('x');
+
+                bool isX2 = x2Pos != std::string::npos;
+                bool isX = !isX2 && xPos != std::string::npos;
+
+                std::string coefStr = (xPos != std::string::npos) ? term.substr(0, xPos) : term;
+                double coef = evalSimpleExpr(coefStr.empty() ? "1" : coefStr);
+
+                if (sign == '-')
+                {
+                    coef *= -1;
+                }
+                if (isX2)
+                {
+                    a += coef;
+                }
+                else if (isX)
+                {
+                    b += coef;
+                }
+                else
+                {
+                    c += coef;
+                }
+
+                sign = '+';
+            }
+        }
     }
 
     return { a, b, c };
@@ -295,35 +258,25 @@ QuadraticValues QuadraticCalculator::evaluateQuadraticExpression(std::string exp
 
 bool QuadraticCalculator::isQuadraticExpression(std::string expression)
 {
-    bool isX = false;
-    bool isPowX = false;
-
-    for (size_t i = 0; i < expression.length(); i++)
+    if (expression.find('x') != std::string::npos && expression.find("x^2") != std::string::npos)
     {
-        if (expression[i] == 'x')
-        {
-            isX = true;
-            if (expression[i + 1] == '^')
-            {
-                isPowX = true;
-            }
-        }
+        return true;
     }
-
-    return isX && isPowX ? true : false;
+    else
+    {
+        return false;
+    }
 }
-
 
 QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(std::string expression)
 {
     if (!isQuadraticExpression(expression))
     {
-        return QuadraticCalculator::CalcResult{ {"NAN" ,"NAN" ,false}, false, "This is not quadratic expression" };
+        return QuadraticCalculator::CalcResult{ {"NAN","NAN",false}, false, "This is not quadratic expression" };
     }
-
-    auto postfix = convertInfixToPostfix(expression);
-
-	auto values = evaluateQuadraticExpression(expression);
-
-    return getRoots(values);
+    else
+    {
+        auto values = evaluateQuadraticExpression(expression);
+        return getRoots(values);
+    }
 }

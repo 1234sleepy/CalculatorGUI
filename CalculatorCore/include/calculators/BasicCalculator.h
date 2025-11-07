@@ -10,7 +10,7 @@ public:
 	enum class operatorPrecedence
 	{
 		AdditionSubstractionPrecedence = 1,
-		MultiplyDividePrecedence = 2,
+		MultiplyDivideSqrtPrecedence = 2,
 		PowPrecedence = 3,
 		OtherPrecedence = 0
 	};

@@ -4,19 +4,16 @@
 #include <cmath>
 
 #include <iostream>
-
-#include "../../include/calculators/BasicCalculator.h"
-
 #include <stack>
 #include <cctype>
 #include <unordered_map>
 #include <functional>
 
-
+#include "../../include/calculators/BasicCalculator.h"
 
 bool BasicCalculator::isOperator(char c)
 {
-    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == 'S';
 }
 
 BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char op)
@@ -26,9 +23,9 @@ BasicCalculator::operatorPrecedence BasicCalculator::getOperatorPrecedence(char 
 		return BasicCalculator::operatorPrecedence::AdditionSubstractionPrecedence;
 	}
 
-	if (op == '*' || op == '/')
+	if (op == '*' || op == '/' || op == 'S')
 	{
-		return BasicCalculator::operatorPrecedence::MultiplyDividePrecedence;
+		return BasicCalculator::operatorPrecedence::MultiplyDivideSqrtPrecedence;
 	}
 
 	if (op == '^')
@@ -60,7 +57,11 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expr
         {
             continue;
         }
-
+        if (expression[i] == 'S')
+        {
+            ops.push('S');
+            continue;     
+        }
         if (isdigit(expression[i]) || expression[i] == '.' || expression[i] =='P' || expression[i] =='e')
         {
             if (expression[i] == 'P')
@@ -111,6 +112,7 @@ std::vector<std::string> BasicCalculator::convertInfixToPostfix(std::string expr
                 }
                 ops.push(expression[i]);
             }
+
         }
     }
 
@@ -134,12 +136,26 @@ BasicCalculator::CalcResult BasicCalculator::evaluatePostfixExpression(const std
         {"-", [](double a, double b) { return a - b; }},
         {"*", [](double a, double b) { return a * b; }},
         {"/", [](double a, double b) { return a / b; }},
-        {"^", [](double a, double b) { return std::pow(a, b); }}
+        {"^", [](double a, double b) { return std::pow(a, b); }},
+        {"S", [](double a, double) { return std::sqrt(a); }}
     };
 
     for (const auto& token : postfix)
-    {
-        if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
+    {   
+        if (token == "S")
+        {
+            if (values.empty())
+                return { NAN, false, "Not correct expression" };
+
+            double a = values.top();
+            values.pop();
+
+            if (a < 0)
+                return { NAN, false, "Sqrt of negative number" };
+
+            values.push(std::sqrt(a));
+        }
+        else if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-'))
         {
             values.push(std::stod(token));
         }

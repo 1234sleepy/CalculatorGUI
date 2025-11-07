@@ -51,7 +51,9 @@ public:
 		}
 	};
 
-	static const std::array<functBtn, 19> kButtonNames;
+	static const ImVec2 kFuncButtonSize;
+
+	static const std::array<functBtn, 20> kButtonNames;
 
 	static const int kProgramWidth;
 	static const int kProgramHeight;

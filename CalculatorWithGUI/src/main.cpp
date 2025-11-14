@@ -46,10 +46,10 @@ struct ExampleDescriptorHeapAllocator
 {
     ID3D12DescriptorHeap* Heap = nullptr;
     D3D12_DESCRIPTOR_HEAP_TYPE  HeapType = D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES;
-    D3D12_CPU_DESCRIPTOR_HANDLE HeapStartCpu;
-    D3D12_GPU_DESCRIPTOR_HANDLE HeapStartGpu;
-    UINT                        HeapHandleIncrement;
-    ImVector<int>               FreeIndices;
+    D3D12_CPU_DESCRIPTOR_HANDLE HeapStartCpu{};
+    D3D12_GPU_DESCRIPTOR_HANDLE HeapStartGpu{};
+    UINT                        HeapHandleIncrement{};
+    ImVector<int>               FreeIndices{};
 
     void Create(ID3D12Device* device, ID3D12DescriptorHeap* heap)
     {
@@ -127,7 +127,6 @@ int WINAPI WinMain(
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
 
-    // Create application window
     HICON icon = static_cast<HICON>(LoadImageW(
         nullptr,
         L"icons/ico2.ico",
@@ -143,14 +142,13 @@ int WINAPI WinMain(
         WndProc,
         0L, 0L,
         GetModuleHandle(nullptr),
-        icon,                        // <-- Large icon (important)
+        icon,
         LoadCursor(nullptr, IDC_ARROW),
         nullptr,
         nullptr,
         L"Calculator | Made by 1234Sleepy",
-        icon                         // <-- Small icon (optional, but good to set)
+        icon                    
     };
-
     ::RegisterClassExW(&wc);
 
 
@@ -637,12 +635,12 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 struct snowFlakesStruct
 {
-    ImVec2 snowFlake = ImVec2(0.0f, 0.0f);
-    float speed = 0.0f;
-    float windOffset = 0.0f;
-    float windDrift = 0.0f;
-    float size = 0.0f;
-    int opacity = 0;
+    ImVec2 snowFlake{ ImVec2(0.0f, 0.0f) };
+    float speed{ 0.0f };
+    float windOffset{ 0.0f };
+    float windDrift {0.0f};
+    float size{ 0.0f };
+    int opacity{ 0 };
 };
 
 
@@ -650,10 +648,10 @@ void drawSnow()
 {
     static std::vector<snowFlakesStruct> snowflakes(300);
 
-    static bool initialized = false;
+    static bool initialized{ false };
 
-    ImGuiIO& io = ImGui::GetIO();
-    ImDrawList* drawList = ImGui::GetForegroundDrawList();
+    ImGuiIO& io{ ImGui::GetIO() };
+    ImDrawList* drawList{ ImGui::GetForegroundDrawList() };
 
     if (!initialized) 
     {
@@ -669,12 +667,12 @@ void drawSnow()
         initialized = true;
     }
 
-    float deltaTime = io.DeltaTime;
+    float deltaTime{ io.DeltaTime };
 
-    static float time = 0.0f;
-    static float gustTimer = 0.0f;
-    static float currentGust = 0.0f;
-    static float targetGust = 0.0f;
+    static float time{ 0.0f };
+    static float gustTimer{ 0.0f };
+    static float currentGust{ 0.0f };
+    static float targetGust{ 0.0f };
 
     time += time + deltaTime < 1000.0f ? deltaTime : 0.0f;
     gustTimer += deltaTime;
@@ -689,9 +687,9 @@ void drawSnow()
 
     for (int i = 0; i < snowflakes.size(); ++i)
     {
-        float sway = sinf(time * 1.2f + snowflakes[i].windOffset) * 30.0f;
-        float drift = snowflakes[i].windDrift * 20.0f;
-        float wind = sway + drift + currentGust;
+        float sway{ sinf(time * 1.2f + snowflakes[i].windOffset) * 30.0f };
+        float drift {snowflakes[i].windDrift * 20.0f};
+        float wind{ sway + drift + currentGust };
 
         snowflakes[i].snowFlake.y += snowflakes[i].speed * deltaTime;
         snowflakes[i].snowFlake.x += wind * deltaTime;

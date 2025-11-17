@@ -100,9 +100,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icons\ico.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="icons\ico2.ico">
       <Filter>Resource Files</Filter>
     </Image>

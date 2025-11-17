@@ -170,7 +170,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icons\ico.ico" />
     <Image Include="icons\ico2.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

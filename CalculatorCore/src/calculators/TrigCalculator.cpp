@@ -19,15 +19,10 @@ std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
 
     std::regex trigPattern(R"(\b(sin|cos|tan|csc|sec|cot|acot|asin|acos|atan|)\s*\(([^()]*)\))", std::regex::icase);
 
-    std::vector<std::smatch> matches
-    {
-        std::sregex_iterator(result.begin(), result.end(), trigPattern),
-        std::sregex_iterator()
-    };
+   std::smatch match;
 
-    for (auto it = matches.rbegin(); it != matches.rend(); ++it)
+    while(std::regex_search(result, match, trigPattern))
     {
-        std::smatch match{ *it };
         TrigCalculator::trigMatch tr{ match[1], match[2] };
 
         double val{ 0.0 };

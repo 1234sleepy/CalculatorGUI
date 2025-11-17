@@ -15,3 +15,17 @@ std::stack<History::historySave> History::getHistory()
 {
 	return History::_history;
 }
+
+std::stack<History::historySave> History::getExportHistory()
+{
+	std::stack<historySave> exportHistory{};
+	std::stack<historySave> tmp = History::_history;
+
+	while (!tmp.empty())
+	{
+		exportHistory.push(tmp.top());
+		tmp.pop();
+	}
+
+	return exportHistory;
+}

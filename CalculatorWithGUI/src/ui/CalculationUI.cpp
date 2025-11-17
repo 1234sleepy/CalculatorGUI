@@ -152,7 +152,8 @@ void CalculatorUI::exportExpressions()
     std::ofstream outputFile(path);
     if (outputFile.is_open())   
     {
-        auto hist = History::getHistory();
+
+        auto hist = History::getExportHistory();
         while (!hist.empty())
         {
             auto element{ hist.top() };

@@ -12,7 +12,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-
+  <a href="https://github.com/1234sleepy/CalculatorGUI">
+    <img src="CalculatorWithGUI/icons/ico2.ico" alt="Logo" width="80" height="80">
+  </a>
 
   <h3 align="center">CalaculatorGUI</h3>
 

@@ -15,9 +15,14 @@ TrigCalculator::CalcResult TrigCalculator::evaluateExpression(std::string expres
 
 std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
 {
-    std::string result{ expression };
+    std::string result = expression ;
+    std::string ds{ result };
 
-    std::regex trigPattern(R"(\b(sin|cos|tan|csc|sec|cot|acot|asin|acos|atan|)\s*\(([^()]*)\))", std::regex::icase);
+    std::regex trigPattern(
+        R"(\b(sin|cos|tan|csc|sec|cot|acot|asin|acos|atan)\s*\(([^\(\)]*)\))",
+        std::regex::icase
+    );
+
 
     std::smatch match;
 
@@ -33,7 +38,7 @@ std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
         }
         else
         {
-            val = std::stod(tr.argument);
+            val = BasicCalculator::evaluateExpression(tr.argument).value;
         }
 
         double value{ 0.0 };

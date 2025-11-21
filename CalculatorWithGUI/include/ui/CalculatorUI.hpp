@@ -8,17 +8,16 @@
 
 #include "../../vendor/imguI/imgui.h"
 
+#include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
+
+#include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
 
 #include "../../../CalculatorCore/include/calculators/BasicCalculator.hpp"
 #include "../../../CalculatorCore/include/calculators/QuadraticCalculator.hpp"
 #include "../../../CalculatorCore/include/calculators/TrigCalculator.hpp"
 #include "../../../CalculatorCore/include/history/History.hpp"
 
-#include "../../include/detection/detectionOfType.hpp"
 
-#include "../../external-library/ImGuiFileDialogLibrary/ImGuiFileDialog.h"
-
-#include "../../../CalculatorWithGUI/vendor/imguI/misc/cpp/imgui_stdlib.h" 
 
 
 #include "../../include/filters/InputFilter.hpp"

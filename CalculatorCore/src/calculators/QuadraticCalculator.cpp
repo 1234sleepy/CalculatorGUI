@@ -272,7 +272,7 @@ QuadraticCalculator::CalcResult QuadraticCalculator::evaluateExpression(std::str
 {
     if (!isQuadraticExpression(expression))
     {
-        return QuadraticCalculator::CalcResult{ {"NAN","NAN",false}, false, "This is not quadratic expression" };
+        return QuadraticCalculator::CalcResult{ {"NAN","NAN",false}, false, "This is not quadratic/simplified expression" };
     }
 
     auto values{ evaluateQuadraticExpression(expression) };

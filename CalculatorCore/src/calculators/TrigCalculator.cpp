@@ -30,16 +30,7 @@ std::string TrigCalculator::evaluateAllTrigFunctions(std::string expression)
     {
         TrigCalculator::trigMatch tr{ match[1], match[2] };
 
-        double val{ 0.0 };
-
-        if (tr.argument == "P")
-        {
-            val = std::round(M_PI * 1000000.0) / 1000000.0;
-        }
-        else
-        {
-            val = BasicCalculator::evaluateExpression(tr.argument).value;
-        }
+        double val{ BasicCalculator::evaluateExpression(tr.argument).value };
 
         double value{ 0.0 };
 

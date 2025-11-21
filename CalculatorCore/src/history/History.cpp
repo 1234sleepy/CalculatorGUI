@@ -6,6 +6,11 @@ std::stack<History::historySave> History::_history;
 
 int History::historyCount{ 1 };
 
+void History::clearHistory()
+{
+	History::_history = std::stack<historySave>();
+}
+
 void History::addHistory(History::historySave expression) 
 {
 	History::_history.push(expression);

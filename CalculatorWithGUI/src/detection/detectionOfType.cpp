@@ -1,12 +1,13 @@
 #include "../../include/detection/detectionOfType.hpp"
 
-int detectionOfType::detectType(std::string expression)
+
+CalculatorUI::calculatorTypes detectionOfType::detectType(std::string expression)
 {
 	for (auto letter : expression)
 	{
 		if (letter == 'x')
 		{
-			return 2;
+			return CalculatorUI::calculatorTypes::QuadraticCalc;
 		}
 	}
 
@@ -20,6 +21,6 @@ int detectionOfType::detectType(std::string expression)
 		expression.find("acos") != std::string::npos ||
 		expression.find("atan") != std::string::npos ||
 		expression.find("acot") != std::string::npos)
-		? 3
-		: 1;
+		? CalculatorUI::calculatorTypes::TrigCalc
+		: CalculatorUI::calculatorTypes::BasicCalc;
 }

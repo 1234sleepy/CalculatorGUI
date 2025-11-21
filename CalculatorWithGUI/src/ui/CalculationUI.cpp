@@ -1,4 +1,5 @@
 ﻿#include "../../include/ui/CalculatorUI.hpp"
+#include "../../include/detection/detectionOfType.hpp"
 
 const ImVec2 CalculatorUI::kFuncButtonSize{ 59,55 };
 
@@ -75,7 +76,6 @@ void CalculatorUI::changeCalc(CalculatorUI::calculatorTypes& currentUI, Calculat
 
 void CalculatorUI::basicCalcEvaluation(BasicCalculator::CalcResult& result)
 {
-    std::string s{ CalculatorUI::replaceLetters(CalculatorUI::expression) };
     result = BasicCalculator::evaluateExpression(CalculatorUI::replaceLetters(CalculatorUI::expression));
 
     CalculatorUI::errorHandler(result.success, result.errorMsg);
@@ -108,38 +108,45 @@ void CalculatorUI::importExpressions(std::filesystem::path filePathName, Calcula
     std::ifstream  importFile(filePathName, std::ios::out);
     std::string line;
 
-    if (importFile.is_open())
+    if (!importFile.is_open())return;
+    
+    CalculatorUI::isImportingFile = true;
+    while (std::getline(importFile, line))
     {
-        CalculatorUI::isImportingFile = true;
-        while (std::getline(importFile, line))
+        if (line.empty())break;
+    
+        CalculatorUI::expression = line;
+        CalculatorUI::calculatorTypes expressionType{ detectionOfType::detectType(CalculatorUI::expression) };
+        
+        switch (expressionType)
         {
-            if (!line.empty())
-            {
-                CalculatorUI::expression = line;
-                CalculatorUI::calculatorTypes expressionType = static_cast<CalculatorUI::calculatorTypes>(detectionOfType::detectType(CalculatorUI::expression));
-                
-                switch (expressionType)
-                {
-                    case CalculatorUI::calculatorTypes::BasicCalc:
-                        CalculatorUI::renderBasicCalculator();
-                        break;
-                    case CalculatorUI::calculatorTypes::QuadraticCalc:
-                        CalculatorUI::renderQuadraticCalculator();
-                        break;
-                    case CalculatorUI::calculatorTypes::TrigCalc:
-                        CalculatorUI::renderTrigCalculator();
-                        break;
-                }
-            }
+            case CalculatorUI::calculatorTypes::BasicCalc:
+                CalculatorUI::renderBasicCalculator();
+                break;
+            case CalculatorUI::calculatorTypes::QuadraticCalc:
+                CalculatorUI::renderQuadraticCalculator();
+                break;
+            case CalculatorUI::calculatorTypes::TrigCalc:
+                CalculatorUI::renderTrigCalculator();
+                break;
         }
-
-        CalculatorUI::isImportingFile = false;
-        importFile.close();
     }
+
+    CalculatorUI::isImportingFile = false;
+    importFile.close();
+    
 }
 
 void CalculatorUI::exportExpressions()
 {
+    auto hist = History::getExportHistory();
+
+    if(hist.empty())
+    { 
+        CalculatorUI::errorHandler(false, "Your history is empty!");
+        return;
+    }
+
     std::filesystem::path path{ "export\\expressions" + std::to_string(CalculatorUI::countOfExportFiles) + ".txt" };
     
     CalculatorUI::countOfExportFiles++;
@@ -150,17 +157,14 @@ void CalculatorUI::exportExpressions()
     }
 
     std::ofstream outputFile(path);
-    if (outputFile.is_open())   
-    {
 
-        auto hist = History::getExportHistory();
-        while (!hist.empty())
-        {
-            auto element{ hist.top() };
-            outputFile << element.exprRes << "\n";
-            hist.pop();
-        }
+    while (!hist.empty())
+    {
+        auto element{ hist.top() };
+        outputFile << element.exprRes << "\n";
+        hist.pop();
     }
+   
 }
 
 void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
@@ -258,6 +262,12 @@ void CalculatorUI::renderCalculatorUI(CalculatorUI::calculatorTypes& currentUI)
         ImGui::SetCursorPosY(5);
         ImGui::SetWindowFontScale(2.0f);
         ImGui::Text("History");
+        ImGui::SetWindowFontScale(1.5f);
+        ImGui::SameLine();
+        if (ImGui::Button("Clear", ImVec2(100, 40)))
+        {
+            History::clearHistory();
+        }
         ImGui::SetWindowFontScale(1.0f);
         if (ImGui::BeginChild("ScrollableRegion", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar    
             | ImGuiWindowFlags_NoMove |
@@ -446,9 +456,9 @@ void CalculatorUI::renderFuncExprButtons(CalculatorUI::calculatorTypes& currentU
     ImGui::End();
 }
 
-void CalculatorUI::errorHandler(bool status, std::string msg)
+void CalculatorUI::errorHandler(bool success, std::string msg)
 {
-    if (!msg.empty() && status == false)
+    if (!msg.empty() && success == false)
     {
         CalculatorUI::isErrorHandlering = true;
         CalculatorUI::errorMsg = msg;

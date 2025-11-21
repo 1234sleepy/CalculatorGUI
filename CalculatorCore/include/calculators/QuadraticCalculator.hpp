@@ -19,8 +19,8 @@ public:
 
 	struct roots
 	{
-		std::string firstRoot = "0.000000";
-		std::string secondRoot = "0.000000";
+		std::string firstRoot{ "0.000000" };
+		std::string secondRoot{ "0.000000" };
 		bool isImaginary;
 	};
 

@@ -172,6 +172,9 @@
   <ItemGroup>
     <Image Include="icons\ico2.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\Gentium-Regular.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -104,4 +104,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\Gentium-Regular.ttf" />
+  </ItemGroup>
 </Project>
